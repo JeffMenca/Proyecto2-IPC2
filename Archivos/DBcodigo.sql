@@ -131,6 +131,7 @@ CREATE TABLE IF NOT EXISTS CITA_EXAMEN_LABORATORIO (
   hora TIME NOT NULL,
   Paciente_codigo VARCHAR(30) NOT NULL,
   Examen_Laboratorio_codigo VARCHAR(45) NOT NULL,
+  orden LONGBLOB,
   Laboratorista_codigo VARCHAR(45) NOT NULL,
   PRIMARY KEY (codigo),
   FOREIGN KEY (Paciente_codigo) REFERENCES PACIENTE(codigo),
@@ -211,6 +212,26 @@ CREATE TABLE IF NOT EXISTS DIAS_TRABAJADOS (
   Laboratorista_codigo VARCHAR(45) NOT NULL,
   PRIMARY KEY (codigo),
   FOREIGN KEY (Laboratorista_codigo) REFERENCES LABORATORISTA(codigo)
+);
+
+  -- -----------------------------------------------------
+-- Tabla Informe PDF`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS INFORME_PDF (
+  archivo LONGBLOB NOT NULL ,
+  Informe_Examen_Laboratorio_codigo VARCHAR(45) NOT NULL,
+  PRIMARY KEY (Informe_Examen_Laboratorio_codigo),
+  FOREIGN KEY (Informe_Examen_Laboratorio_codigo) REFERENCES INFORME_EXAMEN_LABORATORIO(codigo)
+);
+
+  -- -----------------------------------------------------
+-- Tabla Orden PDF`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS ORDEN_PDF (
+  archivo LONGBLOB NOT NULL ,
+  Orden_Examen_codigo INT NOT NULL,
+  PRIMARY KEY (Orden_Examen_codigo),
+  FOREIGN KEY (Orden_Examen_codigo) REFERENCES ORDEN_EXAMEN(codigo)
 );
 
 
