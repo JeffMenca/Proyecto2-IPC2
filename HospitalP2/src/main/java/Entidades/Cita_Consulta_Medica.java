@@ -1,10 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Entidades;
 
+import SQLConnector.DbConnection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -31,6 +32,35 @@ public class Cita_Consulta_Medica {
         this.consulta_medica_codigo = consulta_medica_codigo;
         this.paciente_codigo = paciente_codigo;
         this.medico_codigo = medico_codigo;
+        this.insertarCita_Consulta_Medica();
+    }
+    
+    //Metodo para ingresar cita consulta medica
+    public void insertarCita_Consulta_Medica() {
+        String query = "INSERT INTO CITA_CONSULTA_MEDICA ("
+                + " codigo,"
+                + " fecha,"
+                + " hora,"
+                + " consulta_medica_codigo,"
+                + " paciente_codigo,"
+                + " medico_codigo) VALUES ("
+                + " ?, ?, ?, ?, ?, ?)";
+        try {
+            // Se ingresar los datos a la Query
+
+            PreparedStatement statement = DbConnection.getConnection().prepareStatement(query);
+            statement.setString(1, getCodigo());
+            statement.setDate(2, Date.valueOf(getFecha()));
+            statement.setTime(3, Time.valueOf(getHora()));
+            statement.setInt(4, getConsulta_medica_codigo());
+            statement.setString(5, getPaciente_codigo());
+            statement.setString(6, getMedico_codigo());
+
+            // Ejecutamos el update
+            statement.execute();
+            statement.close();
+        } catch (SQLException e) {
+        }
     }
 
     public String getCodigo() {

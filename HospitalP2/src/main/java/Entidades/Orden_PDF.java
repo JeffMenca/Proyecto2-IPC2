@@ -1,7 +1,10 @@
 
 package Entidades;
 
+import SQLConnector.DbConnection;
 import java.sql.Blob;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 
 /**
@@ -19,6 +22,26 @@ public class Orden_PDF {
     public Orden_PDF(Blob archivo, int orden_examen_codigo) {
         this.archivo = archivo;
         this.orden_examen_codigo = orden_examen_codigo;
+        this.insertarOrden_PDF();
+    }
+    //Metodo para ingresar orden PDF
+    public void insertarOrden_PDF() {
+        String query = "INSERT INTO ORDEN_PDF ("
+                + " archivo,"
+                + " orden_examen_codigo ) VALUES ("
+                + " ?, ?)";
+        try {
+            // Se ingresar los datos a la Query
+
+            PreparedStatement statement = DbConnection.getConnection().prepareStatement(query);
+            statement.setBlob(1, getArchivo());
+            statement.setInt(2, getOrden_examen_codigo());
+
+            // Ejecutamos el update
+            statement.execute();
+            statement.close();
+        } catch (SQLException e) {
+        }
     }
 
     public Blob getArchivo() {

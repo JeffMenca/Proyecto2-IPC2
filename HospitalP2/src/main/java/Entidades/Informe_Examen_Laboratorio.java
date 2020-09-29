@@ -1,6 +1,11 @@
 
 package Entidades;
 
+import SQLConnector.DbConnection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -29,6 +34,36 @@ public class Informe_Examen_Laboratorio {
         this.examen_laboratorio_codigo = examen_laboratorio_codigo;
         this.paciente_codigo = paciente_codigo;
         this.laboratorista_codigo = laboratorista_codigo;
+        this.insertarInforme_Examen_Laboratorio();
+    }
+    //Metodo para ingresar informe examen de laboratorio
+    public void insertarInforme_Examen_Laboratorio() {
+        String query = "INSERT INTO INFORME_EXAMEN_LABORATORIO ("
+                + " codigo,"
+                + " descripcion,"
+                + " fecha,"
+                + " hora,"
+                + " examen_laboratorio_codigo,"
+                + " paciente_codigo,"
+                + " laboratorista_codigo) VALUES ("
+                + " ?, ?, ?, ?, ?, ?, ?)";
+        try {
+            // Se ingresar los datos a la Query
+
+            PreparedStatement statement = DbConnection.getConnection().prepareStatement(query);
+            statement.setString(1, getCodigo());
+            statement.setString(2, getDescripcion());
+            statement.setDate(3, Date.valueOf(getFecha()));
+            statement.setTime(4, Time.valueOf(getHora()));
+            statement.setString(5, getExamen_laboratorio_codigo());
+            statement.setString(6, getPaciente_codigo());
+            statement.setString(7, getLaboratorista_codigo());
+
+            // Ejecutamos el update
+            statement.execute();
+            statement.close();
+        } catch (SQLException e) {
+        }
     }
 
     public String getCodigo() {

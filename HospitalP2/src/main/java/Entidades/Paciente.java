@@ -1,10 +1,13 @@
 package Entidades;
 
 import SQLConnector.DbConnection;
+import SQLConnector.Encriptar;
+import java.io.UnsupportedEncodingException;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.Base64;
 
 /**
  *
@@ -37,6 +40,7 @@ public class Paciente {
         this.tipo_sangre = tipo_sangre;
         this.correo = correo;
         this.password = password;
+        this.insertarPaciente();
     }
 
     //Metodo para ingresar pacientes
@@ -66,15 +70,14 @@ public class Paciente {
             statement.setString(7, getPeso());
             statement.setString(8, getTipo_sangre());
             statement.setString(9, getCorreo());
-            statement.setString(10, getPassword());
-
+            statement.setString(10,Encriptar.encriptar(getPassword()));
             // Ejecutamos el update
             statement.execute();
             statement.close();
-        } catch (SQLException e) {
+        } catch (Exception e) {
         }
     }
-
+    
     //Metodos getters and setters
     public String getCodigo() {
         return codigo;

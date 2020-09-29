@@ -1,6 +1,10 @@
 
 package Entidades;
 
+import SQLConnector.DbConnection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
 /**
  *
  * @author jeffrey
@@ -22,6 +26,33 @@ public class Orden_Examen {
         this.paciente_codigo = paciente_codigo;
         this.medico_codigo = medico_codigo;
         this.examen_laboratorio_codigo = examen_laboratorio_codigo;
+        this.insertarOrden_Examen();
+    }
+    
+    //Metodo para ingresar Orden de examen
+    public void insertarOrden_Examen() {
+        String query = "INSERT INTO ORDEN_EXAMEN ("
+                + " codigo,"
+                + " descripcion,"
+                + " paciente_codigo,"
+                + " medico_codigo,"
+                + " examen_laboratorio_codigo ) VALUES ("
+                + " ?, ?, ?, ?, ?)";
+        try {
+            // Se ingresar los datos a la Query
+
+            PreparedStatement statement = DbConnection.getConnection().prepareStatement(query);
+            statement.setInt(1, 0);
+            statement.setString(2, getDescripcion());
+            statement.setString(3, getPaciente_codigo());
+            statement.setString(4, getMedico_codigo());
+            statement.setString(5, getExamen_laboratorio_codigo());
+
+            // Ejecutamos el update
+            statement.execute();
+            statement.close();
+        } catch (SQLException e) {
+        }
     }
 
     public int getCodigo() {

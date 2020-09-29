@@ -1,6 +1,11 @@
 
 package Entidades;
 
+import SQLConnector.DbConnection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
 
 /**
  *
@@ -19,6 +24,31 @@ public class Administrador {
         this.nombre=nombre;
         this.DPI=DPI;
         this.password=password;
+        this.insertarAdministrador();
+    }
+    
+    //Metodo para ingresar administrador
+    public void insertarAdministrador() {
+        String query = "INSERT INTO ADMINISTRADOR("
+                + " codigo,"
+                + " nombre,"
+                + " DPI,"
+                + " password ) VALUES ("
+                + " ?, ?, ?, ?)";
+        try {
+            // Se ingresar los datos a la Query
+
+            PreparedStatement statement = DbConnection.getConnection().prepareStatement(query);
+            statement.setString(1, getCodigo());
+            statement.setString(2, getNombre());
+            statement.setString(3, getDPI());
+            statement.setString(4, getPassword());
+
+            // Ejecutamos el update
+            statement.execute();
+            statement.close();
+        } catch (SQLException e) {
+        }
     }
 
     public String getCodigo() {

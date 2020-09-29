@@ -1,6 +1,10 @@
 
 package Entidades;
 
+import SQLConnector.DbConnection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
 /**
  *
  * @author jeffrey
@@ -18,6 +22,29 @@ public class Dias_Trabajados {
         this.codigo = codigo;
         this.dia = dia;
         this.laboratorista_codigo = laboratorista_codigo;
+        this.insertarDias_Trabajados();
+    }
+    
+    //Metodo para ingresar dias trabajados
+    public void insertarDias_Trabajados() {
+        String query = "INSERT INTO DIAS_TRABAJADOS ("
+                + " codigo,"
+                + " dia,"
+                + " laboratorista_codigo ) VALUES ("
+                + " ?, ?, ?)";
+        try {
+            // Se ingresar los datos a la Query
+
+            PreparedStatement statement = DbConnection.getConnection().prepareStatement(query);
+            statement.setInt(1, 0);
+            statement.setString(2, getDia());
+            statement.setString(3, getLaboratorista_codigo());
+
+            // Ejecutamos el update
+            statement.execute();
+            statement.close();
+        } catch (SQLException e) {
+        }
     }
 
     public int getCodigo() {

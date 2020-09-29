@@ -1,6 +1,10 @@
 
 package Entidades;
 
+import SQLConnector.DbConnection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
 /**
  *
  * @author jeffrey
@@ -12,6 +16,23 @@ public class Especialidad {
     //Constructor
     public Especialidad(String nombre) {
         this.nombre=nombre;
+        this.insertarEspecialidad();
+    }
+    //Metodo para ingresar especialidad
+    public void insertarEspecialidad() {
+        String query = "INSERT INTO ESPECIALIDAD("
+                + " nombre ) VALUES ("
+                + " ?)";
+        try {
+            // Se ingresar los datos a la Query
+
+            PreparedStatement statement = DbConnection.getConnection().prepareStatement(query);
+            statement.setString(1, getNombre());
+            // Ejecutamos el update
+            statement.execute();
+            statement.close();
+        } catch (SQLException e) {
+        }
     }
 
     public String getNombre() {
