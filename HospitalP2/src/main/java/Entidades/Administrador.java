@@ -2,6 +2,8 @@
 package Entidades;
 
 import SQLConnector.DbConnection;
+import SQLConnector.Encriptar;
+import java.io.UnsupportedEncodingException;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -42,12 +44,12 @@ public class Administrador {
             statement.setString(1, getCodigo());
             statement.setString(2, getNombre());
             statement.setString(3, getDPI());
-            statement.setString(4, getPassword());
+            statement.setString(4, Encriptar.encriptar(getPassword()));
 
             // Ejecutamos el update
             statement.execute();
             statement.close();
-        } catch (SQLException e) {
+        } catch (UnsupportedEncodingException | SQLException e) {
         }
     }
 

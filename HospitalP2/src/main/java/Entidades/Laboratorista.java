@@ -2,6 +2,8 @@
 package Entidades;
 
 import SQLConnector.DbConnection;
+import SQLConnector.Encriptar;
+import java.io.UnsupportedEncodingException;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -60,13 +62,13 @@ public class Laboratorista {
             statement.setString(5, getTelefono());
             statement.setString(6, getCorreo());
             statement.setDate(7, Date.valueOf(getFecha_inicio()));
-            statement.setString(8, getPassword());
+            statement.setString(8, Encriptar.encriptar(getPassword()));
             statement.setString(9, getExamen_laboratorio_codigo());
 
             // Ejecutamos el update
             statement.execute();
             statement.close();
-        } catch (SQLException e) {
+        } catch (UnsupportedEncodingException | SQLException e) {
         }
     }
     

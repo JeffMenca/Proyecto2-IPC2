@@ -2,6 +2,8 @@
 package Entidades;
 
 import SQLConnector.DbConnection;
+import SQLConnector.Encriptar;
+import java.io.UnsupportedEncodingException;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -84,13 +86,13 @@ public class Medico {
             statement.setTime(7,Time.valueOf(getHorario_entrada()));
             statement.setTime(8,Time.valueOf(getHorario_salida()));
             statement.setDate(9, Date.valueOf(getInicio_trabajo()));
-            statement.setString(10, getPassword());
+            statement.setString(10, Encriptar.encriptar(getPassword()));
 
             // Ejecutamos el update
             statement.execute();
             statement.close();
             Especializacion nuevaespecializacion=new Especializacion(getEspecialidad(), getCodigo());
-        } catch (SQLException e) {
+        } catch (UnsupportedEncodingException | SQLException e) {
         }
     }
 

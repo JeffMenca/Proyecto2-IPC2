@@ -74,7 +74,7 @@ public class Paciente {
             // Ejecutamos el update
             statement.execute();
             statement.close();
-        } catch (Exception e) {
+        } catch (UnsupportedEncodingException | SQLException e) {
         }
     }
     
