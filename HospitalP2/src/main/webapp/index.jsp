@@ -24,19 +24,9 @@
 
 
     <body>
-        <header>
-
-            <img class="logo" src="img/logoazul.png" width="300" height="75" />
-            <input type="checkbox" id="nav-toggle" class="nav-toggle">
-            <nav>
-                <ul>
-                    <li><a href="#"></a></li>
-                </ul>
-            </nav>
-            <label for="nav-toggle" class="nav-toggle-label">
-                <span></span>
-            </label>
-        </header>
+        <div class="header">
+            <img class="logo" src="img/logo.png" width="60" height="60" />
+        </div>
         <form method="GET" action="index.jsp">
 
             <div class="login-box">
@@ -64,18 +54,19 @@
 
                 <input type="submit" class="btn" value="Ingresar">
             </div>
-        </form>w
+        </form>
         <% DbConnection conexion = new DbConnection();
             conexion.connectionDB();
             if (!(request.getParameter("usuario") == null) && !(request.getParameter("password") == null) && !(request.getParameter("tipo") == "ninguno")) {
                 Login login = new Login(request.getParameter("usuario"), request.getParameter("password"), request.getParameter("tipo"));
                 if (login.ingresarLogin() == 1) {
+                    session.setAttribute("username", request.getParameter("usuario"));
                     response.sendRedirect("paciente/pacienteIndex.jsp");
-                }else if (login.ingresarLogin() == 2) {
+                } else if (login.ingresarLogin() == 2) {
                     response.sendRedirect("newhtml.html");
-                }else if (login.ingresarLogin() == 3) {
+                } else if (login.ingresarLogin() == 3) {
                     response.sendRedirect("newhtml.html");
-                }else if (login.ingresarLogin() == 4) {
+                } else if (login.ingresarLogin() == 4) {
                     response.sendRedirect("newhtml.html");
                 } else {
         %><h4 class="error">Su usuario, tipo o contraseña son incorrectos</h4><%

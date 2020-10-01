@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Menu</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="../styles/MenuPacienteStyle.css">
+    </head>
+    <body>
+        <div class="header">
+            <img class="logo" src="../img/logo.png" width="60" height="60" />
+            <div class="header-right">
+                <div class="navbar">
+                    <a href="#home">Inicio</a>
+                    <div class="dropdown">
+                        <button class="dropbtn" onclick="dropInformacion()">Informacion
+                            <i class="fa fa-caret-down"></i>
+                        </button>
+                        <div class="dropdown-content" id="informacion">
+                            <a href="BuscarMedico.jsp">Buscar un medico</a>
+                            <a href="#">Buscar un laboratorista</a>
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <button class="dropbtn" onclick="dropConsultas()">Consultas
+                            <i class="fa fa-caret-down"></i>
+                        </button>
+                        <div class="dropdown-content" id="consultas">
+                            <a href="#">Programar cita</a>
+                            <a href="#">Ver citas programadas</a>
+                        </div>
+                    </div> 
+                    <div class="dropdown">
+                        <button class="dropbtn" onclick="dropExamenes()">Examenes
+                            <i class="fa fa-caret-down"></i>
+                        </button>
+                        <div class="dropdown-content" id="examenes">
+                            <a href="#">Programar examen</a>
+                            <a href="#">Ver examenes programados</a>
+                        </div>
+                    </div> 
+                    <div class="dropdown">
+                        <button class="dropbtn" onclick="dropHistorial()">Historial
+                            <i class="fa fa-caret-down"></i>
+                        </button>
+                        <div class="dropdown-content" id="historial">
+                            <a href="#">Historial medico</a>
+                            <a href="#">Reporte 1</a>
+                            <a href="#">Reporte 2</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    <script>
+        /* When the user clicks on the button, 
+         toggle between hiding and showing the dropdown content */
+        function dropConsultas() {
+            document.getElementById("consultas").classList.toggle("show");
+            var myDropdown2 = document.getElementById("examenes");
+            var myDropdown3 = document.getElementById("historial");
+            var myDropdown4 = document.getElementById("informacion");
+            myDropdown2.classList.remove('show');
+            myDropdown3.classList.remove('show');
+            myDropdown4.classList.remove('show');
+        }
+        function dropInformacion() {
+            document.getElementById("informacion").classList.toggle("show");
+            var myDropdown2 = document.getElementById("examenes");
+            var myDropdown3 = document.getElementById("historial");
+            var myDropdown4 = document.getElementById("consultas");
+            myDropdown2.classList.remove('show');
+            myDropdown3.classList.remove('show');
+            myDropdown4.classList.remove('show');
+        }
+        function dropExamenes() {
+            document.getElementById("examenes").classList.toggle("show");
+            var myDropdown2 = document.getElementById("consultas");
+            var myDropdown3 = document.getElementById("historial");
+            var myDropdown4 = document.getElementById("informacion");
+            myDropdown2.classList.remove('show');
+            myDropdown3.classList.remove('show');
+            myDropdown4.classList.remove('show');
+        }
+        function dropHistorial() {
+            document.getElementById("historial").classList.toggle("show");
+            var myDropdown2 = document.getElementById("examenes");
+            var myDropdown3 = document.getElementById("consultas");
+            var myDropdown4 = document.getElementById("informacion");
+            myDropdown2.classList.remove('show');
+            myDropdown3.classList.remove('show');
+            myDropdown4.classList.remove('show');
+        }
+
+        // Close the dropdown if the user clicks outside of it
+        window.onclick = function (e) {
+            if (!e.target.matches('.dropbtn')) {
+                var myDropdown = document.getElementById("consultas");
+                var myDropdown2 = document.getElementById("examenes");
+                var myDropdown3 = document.getElementById("historial");
+                var myDropdown4 = document.getElementById("informacion");
+                if (myDropdown.classList.contains('show')) {
+                    myDropdown.classList.remove('show');
+                }
+                if (myDropdown2.classList.contains('show')) {
+                    myDropdown2.classList.remove('show');
+                }
+                if (myDropdown3.classList.contains('show')) {
+                    myDropdown3.classList.remove('show');
+                }
+                if (myDropdown4.classList.contains('show')) {
+                    myDropdown4.classList.remove('show');
+                }
+            }
+        };
+    </script>
+</body>
+</html>

@@ -91,7 +91,8 @@ public class Medico {
             // Ejecutamos el update
             statement.execute();
             statement.close();
-            Especializacion nuevaespecializacion=new Especializacion(getEspecialidad(), getCodigo());
+            Especializacion nuevaEspecializacion=new Especializacion(getEspecialidad(), getCodigo());
+            Consulta_Medica nuevaConsultaMedica=new Consulta_Medica(0,100, getEspecialidad());
         } catch (UnsupportedEncodingException | SQLException e) {
         }
     }
