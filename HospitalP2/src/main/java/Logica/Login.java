@@ -40,32 +40,29 @@ public class Login {
                 } else {
                     ingreso = 1;
                 }
-            }
-            else if (getTipo().equals("Medico")) {
+            } else if (getTipo().equals("Medico")) {
                 String queryselect = "SELECT * FROM MEDICO WHERE codigo='" + getUsuario() + "' && password='" + newPassword + "'";
                 ResultSet resultset = statements.executeQuery(queryselect);
                 if (resultset.first() == false) {
                     ingreso = 0;
                 } else {
-                    ingreso = 1;
+                    ingreso = 2;
                 }
-            }
-            else if (getTipo().equals("Laboratorista")) {
+            } else if (getTipo().equals("Laboratorista")) {
                 String queryselect = "SELECT * FROM LABORATORISTA WHERE codigo='" + getUsuario() + "' && password='" + newPassword + "'";
                 ResultSet resultset = statements.executeQuery(queryselect);
                 if (resultset.first() == false) {
                     ingreso = 0;
                 } else {
-                    ingreso = 1;
+                    ingreso = 3;
                 }
-            }
-            else if (getTipo().equals("Administrador")) {
+            } else if (getTipo().equals("Administrador")) {
                 String queryselect = "SELECT * FROM ADMINISTRADOR WHERE codigo='" + getUsuario() + "' && password='" + newPassword + "'";
                 ResultSet resultset = statements.executeQuery(queryselect);
                 if (resultset.first() == false) {
                     ingreso = 0;
                 } else {
-                    ingreso = 1;
+                    ingreso = 4;
                 }
             } else {
                 ingreso = 0;

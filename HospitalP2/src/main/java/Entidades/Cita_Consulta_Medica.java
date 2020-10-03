@@ -16,7 +16,7 @@ import java.time.LocalTime;
 public class Cita_Consulta_Medica {
     
     //Atributos
-    private String codigo;
+    private int codigo;
     private LocalDate fecha;
     private LocalTime hora;
     private int consulta_medica_codigo;
@@ -25,7 +25,7 @@ public class Cita_Consulta_Medica {
 
     //Constructor
 
-    public Cita_Consulta_Medica(String codigo, LocalDate fecha, LocalTime hora, int consulta_medica_codigo, String paciente_codigo, String medico_codigo) {
+    public Cita_Consulta_Medica(int codigo, LocalDate fecha, LocalTime hora, int consulta_medica_codigo, String paciente_codigo, String medico_codigo) {
         this.codigo = codigo;
         this.fecha = fecha;
         this.hora = hora;
@@ -49,7 +49,7 @@ public class Cita_Consulta_Medica {
             // Se ingresar los datos a la Query
 
             PreparedStatement statement = DbConnection.getConnection().prepareStatement(query);
-            statement.setString(1, getCodigo());
+            statement.setInt(1, 0);
             statement.setDate(2, Date.valueOf(getFecha()));
             statement.setTime(3, Time.valueOf(getHora()));
             statement.setInt(4, getConsulta_medica_codigo());
@@ -63,11 +63,11 @@ public class Cita_Consulta_Medica {
         }
     }
 
-    public String getCodigo() {
+    public int getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(String codigo) {
+    public void setCodigo(int codigo) {
         this.codigo = codigo;
     }
 

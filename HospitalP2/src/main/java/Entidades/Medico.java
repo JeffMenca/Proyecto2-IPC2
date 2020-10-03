@@ -92,7 +92,6 @@ public class Medico {
             statement.execute();
             statement.close();
             Especializacion nuevaEspecializacion=new Especializacion(getEspecialidad(), getCodigo());
-            Consulta_Medica nuevaConsultaMedica=new Consulta_Medica(0,100, getEspecialidad());
         } catch (UnsupportedEncodingException | SQLException e) {
         }
     }

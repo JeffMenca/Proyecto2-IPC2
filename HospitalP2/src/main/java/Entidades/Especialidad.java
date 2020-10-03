@@ -31,6 +31,7 @@ public class Especialidad {
             // Ejecutamos el update
             statement.execute();
             statement.close();
+            Consulta_Medica nuevaConsultaMedica=new Consulta_Medica(0,100, getNombre());
         } catch (SQLException e) {
         }
     }

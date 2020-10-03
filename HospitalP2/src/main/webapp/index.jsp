@@ -4,6 +4,9 @@
     Author     : jeffmenca
 --%>
 
+<%@page import="java.util.ArrayList"%>
+<%@page import="Logica.HorarioMedico"%>
+<%@page import="Logica.BuscarEnDB"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.sql.Statement"%>
 <%@page import="javax.swing.JOptionPane"%>
@@ -57,17 +60,20 @@
         </form>
         <% DbConnection conexion = new DbConnection();
             conexion.connectionDB();
+           
+            Administrador admin = new Administrador("512", "admin01", "345", "jeffjma100");
             if (!(request.getParameter("usuario") == null) && !(request.getParameter("password") == null) && !(request.getParameter("tipo") == "ninguno")) {
                 Login login = new Login(request.getParameter("usuario"), request.getParameter("password"), request.getParameter("tipo"));
                 if (login.ingresarLogin() == 1) {
                     session.setAttribute("username", request.getParameter("usuario"));
-                    response.sendRedirect("paciente/pacienteIndex.jsp");
+                    response.sendRedirect("paciente/PacienteIndex.jsp");
                 } else if (login.ingresarLogin() == 2) {
                     response.sendRedirect("newhtml.html");
                 } else if (login.ingresarLogin() == 3) {
                     response.sendRedirect("newhtml.html");
                 } else if (login.ingresarLogin() == 4) {
-                    response.sendRedirect("newhtml.html");
+                    session.setAttribute("username", request.getParameter("usuario"));
+                    response.sendRedirect("administrador/AdminIndex.jsp");
                 } else {
         %><h4 class="error">Su usuario, tipo o contraseña son incorrectos</h4><%
                 }

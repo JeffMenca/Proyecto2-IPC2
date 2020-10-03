@@ -15,7 +15,7 @@ import java.sql.Time;
 public class Examen_Laboratorio {
     
     //Atributos
-    private String codigo;
+    private int codigo;
     private String nombre;
     private Boolean orden;
     private String descripcion;
@@ -24,7 +24,7 @@ public class Examen_Laboratorio {
     
     //Constructor
 
-    public Examen_Laboratorio(String codigo, String nombre, Boolean orden, String descripcion, double costo, String tipo_informe) {
+    public Examen_Laboratorio(int codigo, String nombre, Boolean orden, String descripcion, double costo, String tipo_informe) {
         this.codigo = codigo;
         this.nombre = nombre;
         this.orden = orden;
@@ -48,7 +48,7 @@ public class Examen_Laboratorio {
             // Se ingresar los datos a la Query
 
             PreparedStatement statement = DbConnection.getConnection().prepareStatement(query);
-            statement.setString(1, getCodigo());
+            statement.setInt(1, 0);
             statement.setString(2, getNombre());
             if (getOrden()==true) {
                 statement.setInt(3, 1);
@@ -70,11 +70,11 @@ public class Examen_Laboratorio {
     
     //Getters and setters
 
-    public String getCodigo() {
+    public int getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(String codigo) {
+    public void setCodigo(int codigo) {
         this.codigo = codigo;
     }
 

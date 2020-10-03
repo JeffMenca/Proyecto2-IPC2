@@ -4,89 +4,144 @@
     Author     : jeffrey
 --%>
 
+<%@page import="Entidades.Cita_Consulta_Medica"%>
+<%@page import="java.time.LocalTime"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.time.LocalDate"%>
+<%@page import="Logica.HorarioMedico"%>
+<%@page import="Logica.BuscarEnDB"%>
+<%@page import="java.sql.ResultSet"%>
 <%@page import="javax.swing.JOptionPane"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Agendar cita</title>
         <link rel="stylesheet" href="../styles/AgendarCitaStyle.css">
     </head>
     <body>
         <%@include  file="MenuNavigator.html" %>
-        <br> <br> <br> <br> <br> <br> <br> 
-    
+        <form method="GET" action="AgendarCita.jsp">
+            <%
+
+                String codigo = request.getParameter("codigo");
+                try {
+                    if (!codigo.equals("")) {
+                        session.setAttribute("Medico", request.getParameter("codigo"));
+                    }
+                } catch (Exception e) {
+                }
+
+                String codigoMedico = String.valueOf(session.getAttribute("Medico"));
+                BuscarEnDB buscador = new BuscarEnDB();
+                ResultSet resultset = buscador.BuscarMedico(codigoMedico);
+                String nombre = "", costo = "", especialidad = "", consulta = "";
+                while (resultset.next()) {
+                    nombre = resultset.getString("nombre");
+                    costo = resultset.getString("costo");
+                    especialidad = resultset.getString("especialidad_nombre");
+                }
+                ResultSet resultset2 = buscador.BuscarConsulta(especialidad);
+                while (resultset2.next()) {
+                    consulta = resultset2.getString("codigo");
+                }
+            %>
+            <br> <br> <br> <br> <br> <br> <br> 
+
             <div class="container">
                 <h1>Programar cita de consulta</h1>
-                <form action="/action_page.php">
-                    <div class="row">
-                        <div class="col-25">
-                            <label for="fname">Medico</label>
-                        </div>
-                        <div class="col-77">
-                            <input class="date" type="date" id="start" name="trip-start"
-                                   value="2018-07-22"
-                                   min="2018-01-01" max="2018-12-31">
-                        </div>
+                <div class="row">
+                    <div class="col-25">
+                        <label for="fname">Medico</label>
                     </div>
-                    <div class="row">
-                        <div class="col-25">
-                            <label for="fname">Precio</label>
-                        </div>
-                        <div class="col-77">
-                            <input class="date" type="date" id="start" name="trip-start"
-                                   value="2018-07-22"
-                                   min="2018-01-01" max="2018-12-31">
-                        </div>
+                    <div class="col-77">
+                        <input type="text" id="lname" name="lastname" value="<%= nombre%>" readonly>
                     </div>
-                    <div class="row">
-                        <div class="col-25">
-                            <label for="fname">Fecha de la cita</label>
-                        </div>
-                        <div class="col-77">
-                            <input class="date" type="date" id="start" name="trip-start"
-                                   value="2018-07-22"
-                                   min="2018-01-01" max="2018-12-31">
-                        </div>
+                </div>
+                <div class="row">
+                    <div class="col-25">
+                        <label for="fname">Precio</label>
                     </div>
-                    <div class="row">
-                        <div class="col-25">
-                            <label for="lname">Hora de la cita</label>
-                        </div>
-                        <div class="col-77">
-                            <input class="time" id="appt-time" type="time" name="appt-time" value="13:30">
-                        </div>
+                    <div class="col-77">
+                        <input type="text" id="lcosto" name="lastname" value="<%= costo%>" readonly>
                     </div>
-                    <div class="row">
-                        <div class="col-25">
-                            <label for="country">Tipo de consulta</label>
-                        </div>
-                        <div class="col-77">
-                            <select id="country" name="country">
-                                <option value="australia">Australia</option>
-                                <option value="canada">Canada</option>
-                                <option value="usa">USA</option>
-                            </select>
-                        </div>
+                </div>
+                <div class="row">
+                    <div class="col-25">
+                        <label for="country">Tipo de consulta</label>
                     </div>
-                    <div class="row">
-                        <br> 
-                        <input type="submit" value="Guardar">
-                        <input type="submit" value="Guardar">
+                    <div class="col-77">
+                        <input type="text" id="lespecialidad" name="lastname" value="<%= especialidad%>" readonly>
                     </div>
-                </form>
+                </div>
+                <div class="row">
+                    <div class="col-25">
+                        <label for="fname">Fecha de la cita</label>
+                    </div>
+                    <div class="col-77">
+                        <input  type="date" name="fecha"
+                                value="<%= LocalDate.now()%>"
+                                min="<%= LocalDate.now()%>" max="2050-12-31">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-25">
+                        <label for="fname">Verificar disponibilidad de fecha</label>
+                    </div>
+                    <div class="col-77">
+                        <input type="submit" class="button1" value="Ver disponibilidad" name="disponible">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-25">
+                        <label for="fname">Horas disponibles</label>
+                    </div>
+                    <div class="col-77">
+                        <select id="country" name="horas">
+                            <%
+                                if (!(request.getParameter("disponible") == null)) {
+                                    LocalDate fecha = LocalDate.parse(request.getParameter("fecha"));
+                                    HorarioMedico horario = new HorarioMedico(codigoMedico, fecha);
+                                    ArrayList listahoras = horario.comprobarDisponibilidad();
+                                    if (listahoras.size() == 0) {
+                            %><option value="error" >No existen horas disponibles en esa fecha</option><%
+                                }
+                                for (int i = 0; i < listahoras.size(); i++) {
+                            %><option value="<%= listahoras.get(i)%>"><%= listahoras.get(i)%></option><%
+                                }
+                            } else {
+                            %><option value="error" >No ha comprobado disponibilidad</option><%
+                                }
+
+                                %>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <br> 
+                    <input type="submit" class="button2" value="Programar cita">
+                </div>
+
             </div>
 
+        </form>
 
+    </body>
+    <%        try {
+            if (!(request.getParameter("horas").equals("error"))) {
 
-
-
-
-
-            </body>
-            <%
-                String codigoMedico = request.getParameter("codigo");
                 String codigoPaciente = String.valueOf(session.getAttribute("username"));
-            %>
-            </html>
+                LocalDate fechaIngresada = LocalDate.parse(request.getParameter("fecha"));
+                LocalTime horaIngresada = LocalTime.parse(request.getParameter("horas"));
+                int consultaIngresada = Integer.valueOf(consulta);
+                Cita_Consulta_Medica nuevaConsulta = new Cita_Consulta_Medica(0, fechaIngresada, horaIngresada,
+                        consultaIngresada, codigoPaciente, codigoMedico);
+            }
+
+        } catch (Exception e) {
+        }
+
+
+    %>
+</html>
