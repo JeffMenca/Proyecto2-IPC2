@@ -42,7 +42,7 @@
                     costo = resultset.getString("costo");
                     especialidad = resultset.getString("especialidad_nombre");
                 }
-                ResultSet resultset2 = buscador.BuscarConsulta(especialidad);
+                ResultSet resultset2 = buscador.BuscarConsultaEspecialidad(especialidad);
                 while (resultset2.next()) {
                     consulta = resultset2.getString("codigo");
                 }
@@ -135,8 +135,18 @@
                 LocalDate fechaIngresada = LocalDate.parse(request.getParameter("fecha"));
                 LocalTime horaIngresada = LocalTime.parse(request.getParameter("horas"));
                 int consultaIngresada = Integer.valueOf(consulta);
-                Cita_Consulta_Medica nuevaConsulta = new Cita_Consulta_Medica(0, fechaIngresada, horaIngresada,
-                        consultaIngresada, codigoPaciente, codigoMedico);
+                try {
+                    Cita_Consulta_Medica nuevaConsulta = new Cita_Consulta_Medica(0, fechaIngresada, horaIngresada,
+                            consultaIngresada, codigoPaciente, codigoMedico);
+    %> 
+    <div class="alert1">
+        <span class="closebtn"> 
+            <strong>Creado</strong> La cita se creo exitosamente
+    </div>
+    <%
+                } catch (Exception e) {
+                }
+
             }
 
         } catch (Exception e) {

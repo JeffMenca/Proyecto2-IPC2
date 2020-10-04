@@ -18,7 +18,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Crear examen</title>
         <link rel="stylesheet" href="../styles/AgendarCitaStyle.css">
     </head>
     <body>
@@ -34,7 +34,7 @@
                         <label for="fname">Nombre</label>
                     </div>
                     <div class="col-77">
-                        <input type="text" id="lname" name="nombre" placeholder="Nombre del examen">
+                        <input type="text" id="lname" name="nombre" placeholder="Nombre del examen" required>
                     </div>
                 </div>
                 <div class="row">
@@ -42,7 +42,7 @@
                         <label for="country">Costo</label>
                     </div>
                     <div class="col-77">
-                        <input type="number" name="costo" value="100.00" step="0.01" min="0">
+                        <input type="number" name="costo" value="100.00" step="0.01" min="0" required>
                     </div>
                 </div>
                 <div class="row">
@@ -72,7 +72,7 @@
                         <label for="subject">Descripcion</label>
                     </div>
                     <div class="col-77">
-                        <textarea id="subject" name="descripcion" placeholder="Descripcion.." style="height:150px"></textarea>
+                        <textarea id="subject" name="descripcion" placeholder="Descripcion.." required style="height:150px"></textarea>
                     </div>
                 </div>
 
@@ -96,14 +96,32 @@
             resultado = false;
         }
         try {
-            if (!(request.getParameter("nombre") == null) && !(request.getParameter("costo") == null) && !(resultado == false)) {
+            if ((request.getParameter("nombre") != "") && (request.getParameter("costo") != "") && (resultado == true)) {
                 if (request.getParameter("orden").equals("Si")) {
                     informe = true;
                 } else {
                     informe = false;
                 }
-                Examen_Laboratorio nuevoExamen=new Examen_Laboratorio(0,request.getParameter("nombre"), informe, 
-                request.getParameter("descripcion"), Double.parseDouble(request.getParameter("costo")), request.getParameter("tipo"));
+                try {
+                    Examen_Laboratorio nuevoExamen = new Examen_Laboratorio(0, request.getParameter("nombre"), informe,
+                            request.getParameter("descripcion"), Double.parseDouble(request.getParameter("costo")), request.getParameter("tipo"));
+    %> 
+    <div class="alert1">
+        <span class="closebtn"> 
+            <strong>Creado</strong> El examen se creo exitosamente
+    </div>
+    <%
+                } catch (Exception e) {
+                }
+
+            }
+else {
+    %> 
+    <div class="alert2">
+        <span class="closebtn"> 
+            <strong>Error</strong> No ingreso bien los datos del examen
+    </div>
+    <%
             }
 
         } catch (Exception e) {

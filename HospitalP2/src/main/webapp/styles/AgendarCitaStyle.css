@@ -16,6 +16,33 @@ label {
     padding: 12px 12px 12px 0;
     display: inline-block;
 }
+a {
+    float: left;
+    color: white;
+    text-align: center;
+    padding: 20px 25px;
+    text-decoration: none;
+    font-size: 16px;
+    border-radius: 4px;
+    background-color: dodgerblue;
+    color: white;
+}
+a:hover {
+    background-color: #60aeee;
+    color: white;
+}
+
+.alert1 {
+    padding: 20px;
+    background-color: #4CAF50;
+    color: white;
+}
+.alert2 {
+    padding: 20px;
+    background-color: #f44336;
+    color: white;
+}
+
 
 .button1 {
     background-color: #60aeee;

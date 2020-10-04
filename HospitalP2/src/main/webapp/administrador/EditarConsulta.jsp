@@ -16,8 +16,13 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <script>
+        function exito() {
+            alert("Consulta editada con exito");
+        }
+      </script>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Agendar cita</title>
+        <title>Editar Consulta</title>
         <link rel="stylesheet" href="../styles/AgendarCitaStyle.css">
     </head>
     <body>
@@ -75,12 +80,12 @@
                         <label for="country">Costo</label>
                     </div>
                     <div class="col-77">
-                        <input type="number" name="costo"  step="0.01" min="0" value="<%=costo%>"/>
+                        <input type="number" name="costo"  step="0.01" min="0" value="<%=costo%>" required/>
                     </div>
                 </div>
                 <div class="row">
                     <br> 
-                    <input type="submit" class="button2" name="botonEditar" value="Editar examen de laboratorio">
+                    <input type="submit" class="button2" name="botonEditar" onclick="exito()" value="Editar examen de laboratorio">
                 </div>
 
             </div>

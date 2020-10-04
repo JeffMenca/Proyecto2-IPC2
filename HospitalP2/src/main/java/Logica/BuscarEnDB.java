@@ -1,9 +1,13 @@
 package Logica;
 
 import SQLConnector.DbConnection;
+import SQLConnector.Encriptar;
+import java.io.UnsupportedEncodingException;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import javax.swing.JOptionPane;
 
 /**
@@ -48,6 +52,28 @@ public class BuscarEnDB {
         return null;
     }
 
+    public ResultSet BuscarPaciente(String codigo) {
+        try {
+            String queryselect = "SELECT * FROM PACIENTE WHERE codigo='" + codigo + "'";
+            PreparedStatement pstatement = DbConnection.getConnection().prepareStatement(queryselect);
+            ResultSet resultset01 = pstatement.executeQuery();
+            return resultset01;
+        } catch (Exception e) {
+        }
+        return null;
+    }
+
+    public ResultSet BuscarConsultaEspecialidad(String especialidad) {
+        try {
+            String queryselect = "SELECT * FROM CONSULTA_MEDICA WHERE especialidad_nombre='" + especialidad + "'";
+            PreparedStatement pstatement = DbConnection.getConnection().prepareStatement(queryselect);
+            ResultSet resultset01 = pstatement.executeQuery();
+            return resultset01;
+        } catch (Exception e) {
+        }
+        return null;
+    }
+
     public void EditarExamenLaboratorio(int codigo, String nombre, Boolean orden, String descripcion, Double costo, String tipo_informe) {
 
         String query = "UPDATE EXAMEN_LABORATORIO SET nombre=?, orden=?, descripcion=?, costo=?, tipo_informe=? WHERE codigo=?";
@@ -74,7 +100,7 @@ public class BuscarEnDB {
 
     }
 
-    public void EditarConsulta(int codigo,String especialidad, Double costo) {
+    public void EditarConsulta(int codigo, String especialidad, Double costo) {
 
         String query = "UPDATE CONSULTA_MEDICA SET costo=?, especialidad_nombre=? WHERE codigo=?";
         try {
@@ -89,6 +115,35 @@ public class BuscarEnDB {
             statement.execute();
             statement.close();
         } catch (SQLException e) {
+        }
+
+    }
+
+    public void EditarPaciente(String codigo, String nombre, String sexo, LocalDate fecha, String DPI, String telefono, String peso,
+            String tipo_sangre, String correo, String password) {
+
+        String query = "UPDATE PACIENTE SET nombre=?,sexo=?, fecha_nacimiento=?, DPI=?, telefono=?, peso=?, tipo_sangre=?, correo=?,"
+                + " password=? WHERE codigo=?";
+        try {
+            // Se ingresar los datos a la Query
+
+            PreparedStatement statement = DbConnection.getConnection().prepareStatement(query);
+            statement.setString(1, nombre);
+            statement.setString(2, sexo);
+            statement.setDate(3, Date.valueOf(fecha));
+            statement.setString(4, DPI);
+            statement.setString(5, telefono);
+            statement.setString(6, peso);
+            statement.setString(7, tipo_sangre);
+            statement.setString(8, correo);
+            statement.setString(9, Encriptar.encriptar(password));
+            statement.setString(10, codigo);
+
+            // Ejecutamos el update
+            statement.execute();
+            statement.close();
+        } catch (UnsupportedEncodingException | SQLException e) {
+            JOptionPane.showMessageDialog(null, "no se edito");
         }
 
     }

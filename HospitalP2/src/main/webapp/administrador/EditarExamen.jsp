@@ -21,6 +21,11 @@
         <link rel="stylesheet" href="../styles/AgendarCitaStyle.css">
     </head>
     <body>
+        <script>
+            function exito() {
+                alert("Examen editado con exito");
+            }
+        </script>
         <%@include  file="MenuNavigator4.html" %>
         <form method="GET" id="Form1" action="EditarExamen.jsp">
             <%
@@ -82,7 +87,7 @@
                         <label for="fname">Nombre</label>
                     </div>
                     <div class="col-77">
-                        <input type="text" id="lname" name="nombre" value="<%= nombre%>">
+                        <input type="text" id="lname" name="nombre" value="<%= nombre%>" required>
                     </div>
                 </div>
                 <div class="row">
@@ -90,7 +95,7 @@
                         <label for="country">Costo</label>
                     </div>
                     <div class="col-77">
-                        <input type="number" name="costo"  step="0.01" min="0" value="<%=costo%>"/>
+                        <input type="number" name="costo"  step="0.01" min="0" value="<%=costo%>" required/>
                     </div>
                 </div>
                 <div class="row">
@@ -120,13 +125,13 @@
                         <label for="subject">Descripcion</label>
                     </div>
                     <div class="col-77">
-                        <textarea id="subject" name="descripcion"  style="height:150px"><%= descripcion%></textarea>
+                        <textarea id="subject" name="descripcion" required style="height:150px"><%= descripcion%></textarea>
                     </div>
                 </div>
 
                 <div class="row">
                     <br> 
-                    <input type="submit" class="button2" name="botonEditar" value="Editar examen de laboratorio">
+                    <input type="submit" class="button2" name="botonEditar" onclick="exito()" value="Editar examen de laboratorio">
                 </div>
 
             </div>
