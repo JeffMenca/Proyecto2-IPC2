@@ -4,6 +4,7 @@
     Author     : jeffrey
 --%>
 
+<%@page import="Entidades.Laboratorista"%>
 <%@page import="Entidades.Paciente"%>
 <%@page import="SQLConnector.Encriptar"%>
 <%@page import="Entidades.Cita_Consulta_Medica"%>
@@ -19,61 +20,60 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Editar Paciente</title>
+        <title>Editar Laboratorista</title>
         <link rel="stylesheet" href="../styles/AgendarCitaStyle.css">
     </head>
     <body>
         <script>
             function exito() {
-                alert("Paciente editado con exito");
+                alert("Laboratorista editado con exito");
             }
         </script>
         <%@include  file="MenuNavigator4.html" %>
-        <form method="GET" id="Form1" action="EditarPaciente.jsp">
+        <form method="GET" id="Form1" action="EditarLaboratorista.jsp">
             <%
-                String paciente;
+                String laboratorista;
                 try {
-                    paciente = request.getParameter("codigo");
+                    laboratorista = request.getParameter("codigo");
                 } catch (Exception e) {
-                    paciente = String.valueOf(session.getAttribute("Paciente"));
+                    laboratorista = String.valueOf(session.getAttribute("Laboratorista"));
                 }
                 String codigo = request.getParameter("codigo");
                 try {
                     if (!codigo.equals("")) {
-                        session.setAttribute("Paciente", request.getParameter("codigo"));
+                        session.setAttribute("Laboratorista", request.getParameter("codigo"));
                     }
                 } catch (Exception e) {
                 }
 
-                String codigoPaciente = String.valueOf(session.getAttribute("Paciente"));
+                String codigoLaboratorista = String.valueOf(session.getAttribute("Laboratorista"));
                 BuscarEnDB buscador = new BuscarEnDB();
-                ResultSet resultset = buscador.BuscarPaciente(codigoPaciente);
-                String nombre = "", sexo = "", DPI = "", telefono = "", peso = "", sangre = "", correo = "", password = "";
+                ResultSet resultset = buscador.BuscarLaboratorista(codigoLaboratorista);
+                String nombre = "", registro = "", DPI = "", telefono = "", correo = "", password = "", nombreExamen = "";
                 LocalDate fecha = null;
                 while (resultset.next()) {
                     nombre = resultset.getString("nombre");
-                    sexo = resultset.getString("sexo");
+                    registro = resultset.getString("numero_registro");
                     DPI = resultset.getString("DPI");
                     telefono = resultset.getString("telefono");
-                    peso = resultset.getString("peso");
-                    sangre = resultset.getString("tipo_sangre");
                     correo = resultset.getString("correo");
-                    password = Encriptar.desencriptar(resultset.getString("password"));
-                    String fechaCaracter = String.valueOf(resultset.getDate("fecha_nacimiento"));
+                    String fechaCaracter = String.valueOf(resultset.getDate("fecha_inicio"));
                     fecha = LocalDate.parse(fechaCaracter);
+                    password = Encriptar.desencriptar(resultset.getString("password"));
+                    nombreExamen = resultset.getString("nombre_Examen");
                 }
 
             %>
             <br> <br> <br> <br> <br> <br> <br> 
 
             <div class="container">
-                <h1>Editar Paciente</h1>
+                <h1>Editar Laboratorista</h1>
                 <div class="row">
                     <div class="col-25">
                         <label for="fname">Codigo</label>
                     </div>
                     <div class="col-77">
-                        <input type="text" id="lcodigo" name="codigo" value="<%= codigoPaciente%>" readonly>
+                        <input type="text" id="lcodigo" name="codigo" value="<%= codigoLaboratorista%>" readonly>
                     </div>
                 </div>
                 <div class="row">
@@ -86,20 +86,10 @@
                 </div>
                 <div class="row">
                     <div class="col-25">
-                        <label for="fname">Sexo</label>
+                        <label for="fname">Numero de registro</label>
                     </div>
                     <div class="col-77">
-                        <input type="text" id="lsexo" name="sexo" value="<%= sexo%>" required >
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-25">
-                        <label for="fname">Fecha de nacimiento</label>
-                    </div>
-                    <div class="col-77">
-                        <input  type="date" name="fecha"
-                                value="<%= fecha%>"
-                                min="1870-01-01" max="<%= LocalDate.now()%>">
+                        <input type="text" id="lcolegiado" name="registro" value="<%= registro%>" required >
                     </div>
                 </div>
                 <div class="row">
@@ -107,7 +97,7 @@
                         <label for="fname">DPI</label>
                     </div>
                     <div class="col-77">
-                        <input type="text" id="ldpi" name="DPI" value="<%= DPI%>" required>
+                        <input type="text" id="lDPI" name="DPI" value="<%= DPI%>" required >
                     </div>
                 </div>
                 <div class="row">
@@ -120,22 +110,6 @@
                 </div>
                 <div class="row">
                     <div class="col-25">
-                        <label for="fname">Peso</label>
-                    </div>
-                    <div class="col-77">
-                        <input type="text" id="lpeso" name="peso" value="<%= peso%>" required >
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-25">
-                        <label for="fname">Tipo de sangre</label>
-                    </div>
-                    <div class="col-77">
-                        <input type="text" id="lsangre" name="sangre" value="<%= sangre%>" required >
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-25">
                         <label for="fname">Correo</label>
                     </div>
                     <div class="col-77">
@@ -144,16 +118,48 @@
                 </div>
                 <div class="row">
                     <div class="col-25">
+                        <label for="fname">Fecha de inicio de trabajo</label>
+                    </div>
+                    <div class="col-77">
+                        <input  type="date" name="fecha"
+                                value="<%= fecha%>"
+                                min="1870-01-01" max="<%= LocalDate.now()%>">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-25">
                         <label for="fname">Password</label>
                     </div>
                     <div class="col-77">
-                        <input type="text" id="lpassword" name="password" value="<%= password%>" required >
+                        <input type="password" id="lpassword" name="password" value="<%= password%>" required >
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-25">
+                        <label for="fname">Examen que realizara</label>
+                    </div>
+                    <div class="col-77">
+                        <select id="country" name="examen">
+                            <%
+
+                                buscador = new BuscarEnDB();
+                                ResultSet resultados = buscador.BuscarExamenesSin(nombreExamen);
+                                ResultSet resultados2 = buscador.BuscarExamen(nombreExamen);
+                                while (resultados2.next()) {
+                            %><option value="<%= resultados2.getInt("codigo")%>"><%= resultados2.getString("nombre")%></option><%
+                                            }
+                                            while (resultados.next()) {
+                            %><option value="<%= resultados.getInt("codigo")%>"><%= resultados.getString("nombre")%></option><%
+                                }
+                                %>
+                        </select>
                     </div>
                 </div>
                 <div class="row">
                     <br> 
                     <input type="submit" class="button2" name="botonEditar" onclick="exito()" value="Editar examen de laboratorio">
                 </div>
+
 
             </div>
 
@@ -162,16 +168,12 @@
     </body>
     <%
         try {
-            if (!(request.getParameter("nombre") == null) && !(request.getParameter("codigo") == null)
-                    && !(request.getParameter("DPI") == null) && !(request.getParameter("telefono") == null)
-                    && !(request.getParameter("peso") == null)) {
-                LocalDate fechaIngresada = LocalDate.parse(request.getParameter("fecha"));
-                buscador.EditarPaciente(request.getParameter("codigo"), request.getParameter("nombre"), request.getParameter("sexo"),
-                        fechaIngresada, request.getParameter("DPI"), request.getParameter("telefono"), request.getParameter("peso"),
-                        request.getParameter("sangre"), request.getParameter("correo"), request.getParameter("password"));
-                response.sendRedirect("EditarPaciente.jsp");
-                session.setAttribute("Paciente", codigoPaciente);
-            }
+            LocalDate fechaIngresada = LocalDate.parse(request.getParameter("fecha"));
+            buscador.EditarLaboratorista(request.getParameter("codigo"), request.getParameter("nombre"),
+                    request.getParameter("registro"), request.getParameter("DPI"), request.getParameter("telefono"), request.getParameter("correo"),
+                    fechaIngresada, request.getParameter("password"), Integer.parseInt(request.getParameter("examen")));
+            response.sendRedirect("EditarLaboratorista.jsp");
+            session.setAttribute("Laboratorista", codigoLaboratorista);
 
         } catch (Exception e) {
         }

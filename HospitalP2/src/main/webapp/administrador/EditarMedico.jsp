@@ -19,61 +19,65 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Editar Paciente</title>
+        <title>Editar Medico</title>
         <link rel="stylesheet" href="../styles/AgendarCitaStyle.css">
     </head>
     <body>
         <script>
             function exito() {
-                alert("Paciente editado con exito");
+                alert("Medico editado con exito");
             }
         </script>
         <%@include  file="MenuNavigator4.html" %>
-        <form method="GET" id="Form1" action="EditarPaciente.jsp">
+        <form method="GET" id="Form1" action="EditarMedico.jsp">
             <%
-                String paciente;
+                String medico;
                 try {
-                    paciente = request.getParameter("codigo");
+                    medico = request.getParameter("codigo");
                 } catch (Exception e) {
-                    paciente = String.valueOf(session.getAttribute("Paciente"));
+                    medico = String.valueOf(session.getAttribute("Medico"));
                 }
                 String codigo = request.getParameter("codigo");
                 try {
                     if (!codigo.equals("")) {
-                        session.setAttribute("Paciente", request.getParameter("codigo"));
+                        session.setAttribute("Medico", request.getParameter("codigo"));
                     }
                 } catch (Exception e) {
                 }
 
-                String codigoPaciente = String.valueOf(session.getAttribute("Paciente"));
+                String codigoMedico = String.valueOf(session.getAttribute("Medico"));
                 BuscarEnDB buscador = new BuscarEnDB();
-                ResultSet resultset = buscador.BuscarPaciente(codigoPaciente);
-                String nombre = "", sexo = "", DPI = "", telefono = "", peso = "", sangre = "", correo = "", password = "";
+                ResultSet resultset = buscador.BuscarMedicos(codigoMedico);
+                String nombre = "", colegiado = "", DPI = "", telefono = "", correo = "", password = "",
+                        horaEntradaCaracter = "", horaSalidaCaracter = "";
                 LocalDate fecha = null;
+                LocalTime horaEntrada = null, horaSalida = null;
                 while (resultset.next()) {
                     nombre = resultset.getString("nombre");
-                    sexo = resultset.getString("sexo");
+                    colegiado = resultset.getString("numero_colegiado");
                     DPI = resultset.getString("DPI");
                     telefono = resultset.getString("telefono");
-                    peso = resultset.getString("peso");
-                    sangre = resultset.getString("tipo_sangre");
                     correo = resultset.getString("correo");
-                    password = Encriptar.desencriptar(resultset.getString("password"));
-                    String fechaCaracter = String.valueOf(resultset.getDate("fecha_nacimiento"));
+                    horaEntradaCaracter = String.valueOf(resultset.getTime("horario_entrada"));
+                    horaEntrada = LocalTime.parse(horaEntradaCaracter);
+                    horaSalidaCaracter = String.valueOf(resultset.getTime("horario_salida"));
+                    horaSalida = LocalTime.parse(horaSalidaCaracter);
+                    String fechaCaracter = String.valueOf(resultset.getDate("inicio_trabajo"));
                     fecha = LocalDate.parse(fechaCaracter);
+                    password = Encriptar.desencriptar(resultset.getString("password"));
                 }
 
             %>
             <br> <br> <br> <br> <br> <br> <br> 
 
             <div class="container">
-                <h1>Editar Paciente</h1>
+                <h1>Editar Medico</h1>
                 <div class="row">
                     <div class="col-25">
                         <label for="fname">Codigo</label>
                     </div>
                     <div class="col-77">
-                        <input type="text" id="lcodigo" name="codigo" value="<%= codigoPaciente%>" readonly>
+                        <input type="text" id="lcodigo" name="codigo" value="<%= codigoMedico%>" readonly>
                     </div>
                 </div>
                 <div class="row">
@@ -86,20 +90,10 @@
                 </div>
                 <div class="row">
                     <div class="col-25">
-                        <label for="fname">Sexo</label>
+                        <label for="fname">Numero de colegiado</label>
                     </div>
                     <div class="col-77">
-                        <input type="text" id="lsexo" name="sexo" value="<%= sexo%>" required >
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-25">
-                        <label for="fname">Fecha de nacimiento</label>
-                    </div>
-                    <div class="col-77">
-                        <input  type="date" name="fecha"
-                                value="<%= fecha%>"
-                                min="1870-01-01" max="<%= LocalDate.now()%>">
+                        <input type="text" id="lcolegiado" name="colegiado" value="<%= colegiado%>" required >
                     </div>
                 </div>
                 <div class="row">
@@ -107,7 +101,7 @@
                         <label for="fname">DPI</label>
                     </div>
                     <div class="col-77">
-                        <input type="text" id="ldpi" name="DPI" value="<%= DPI%>" required>
+                        <input type="text" id="lDPI" name="DPI" value="<%= DPI%>" required >
                     </div>
                 </div>
                 <div class="row">
@@ -120,22 +114,6 @@
                 </div>
                 <div class="row">
                     <div class="col-25">
-                        <label for="fname">Peso</label>
-                    </div>
-                    <div class="col-77">
-                        <input type="text" id="lpeso" name="peso" value="<%= peso%>" required >
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-25">
-                        <label for="fname">Tipo de sangre</label>
-                    </div>
-                    <div class="col-77">
-                        <input type="text" id="lsangre" name="sangre" value="<%= sangre%>" required >
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-25">
                         <label for="fname">Correo</label>
                     </div>
                     <div class="col-77">
@@ -144,10 +122,38 @@
                 </div>
                 <div class="row">
                     <div class="col-25">
+                        <label for="fname">Hora de entrada</label>
+                    </div>
+                    <div class="col-77">
+                        <input type="time" id="appt" value="<%= horaEntradaCaracter%>" name="horaentrada"
+                               required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-25">
+                        <label for="fname">Hora de salida</label>
+                    </div>
+                    <div class="col-77">
+                        <input type="time" id="appt" value="<%= horaSalidaCaracter%>" name="horasalida"
+                               required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-25">
+                        <label for="fname">Fecha de inicio de trabajo</label>
+                    </div>
+                    <div class="col-77">
+                        <input  type="date" name="fecha"
+                                value="<%= fecha%>"
+                                min="1870-01-01" max="<%= LocalDate.now()%>">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-25">
                         <label for="fname">Password</label>
                     </div>
                     <div class="col-77">
-                        <input type="text" id="lpassword" name="password" value="<%= password%>" required >
+                        <input type="password" id="lpassword" name="password" value="<%= password%>" required >
                     </div>
                 </div>
                 <div class="row">
@@ -162,16 +168,17 @@
     </body>
     <%
         try {
-            if (!(request.getParameter("nombre") == null) && !(request.getParameter("codigo") == null)
-                    && !(request.getParameter("DPI") == null) && !(request.getParameter("telefono") == null)
-                    && !(request.getParameter("peso") == null)) {
+
+            LocalTime horaEntradaIngresada = LocalTime.parse(request.getParameter("horaentrada"));
+            LocalTime horaSalidaIngresada = LocalTime.parse(request.getParameter("horasalida"));
+            response.sendRedirect("EditarMedico.jsp");
+            session.setAttribute("Medico", codigoMedico);
+            if ((horaEntradaIngresada.isBefore(horaSalidaIngresada))) {
                 LocalDate fechaIngresada = LocalDate.parse(request.getParameter("fecha"));
-                buscador.EditarPaciente(request.getParameter("codigo"), request.getParameter("nombre"), request.getParameter("sexo"),
-                        fechaIngresada, request.getParameter("DPI"), request.getParameter("telefono"), request.getParameter("peso"),
-                        request.getParameter("sangre"), request.getParameter("correo"), request.getParameter("password"));
-                response.sendRedirect("EditarPaciente.jsp");
-                session.setAttribute("Paciente", codigoPaciente);
+                buscador.EditarMedico(codigoMedico, request.getParameter("nombre"), request.getParameter("colegiado"), request.getParameter("DPI"),
+                        request.getParameter("telefono"), request.getParameter("correo"), horaEntradaIngresada, horaSalidaIngresada, fechaIngresada, request.getParameter("password"));
             }
+            
 
         } catch (Exception e) {
         }

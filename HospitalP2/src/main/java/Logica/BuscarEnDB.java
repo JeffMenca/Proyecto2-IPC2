@@ -1,5 +1,6 @@
 package Logica;
 
+import Entidades.Dias_Trabajados;
 import SQLConnector.DbConnection;
 import SQLConnector.Encriptar;
 import java.io.UnsupportedEncodingException;
@@ -7,7 +8,10 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 /**
@@ -30,9 +34,55 @@ public class BuscarEnDB {
         return null;
     }
 
+    public ResultSet BuscarLaboratorista(String codigo) {
+        try {
+            String queryselect = "SELECT L.*,E.nombre AS nombre_Examen FROM LABORATORISTA L "
+                    + "INNER JOIN EXAMEN_LABORATORIO E ON L.examen_laboratorio_codigo=E.codigo WHERE L.codigo='" + codigo + "'";
+
+            PreparedStatement pstatement = DbConnection.getConnection().prepareStatement(queryselect);
+            ResultSet resultset01 = pstatement.executeQuery();
+            return resultset01;
+        } catch (Exception e) {
+        }
+        return null;
+    }
+
     public ResultSet BuscarExamen(int codigo) {
         try {
             String queryselect = "SELECT * FROM EXAMEN_LABORATORIO WHERE codigo='" + codigo + "'";
+            PreparedStatement pstatement = DbConnection.getConnection().prepareStatement(queryselect);
+            ResultSet resultset01 = pstatement.executeQuery();
+            return resultset01;
+        } catch (Exception e) {
+        }
+        return null;
+    }
+
+    public ResultSet BuscarExamen(String nombre) {
+        try {
+            String queryselect = "SELECT * FROM EXAMEN_LABORATORIO WHERE nombre='" + nombre + "'";
+            PreparedStatement pstatement = DbConnection.getConnection().prepareStatement(queryselect);
+            ResultSet resultset01 = pstatement.executeQuery();
+            return resultset01;
+        } catch (Exception e) {
+        }
+        return null;
+    }
+
+    public ResultSet BuscarTodosExamenes() {
+        try {
+            String queryselect = "SELECT * FROM EXAMEN_LABORATORIO";
+            PreparedStatement pstatement = DbConnection.getConnection().prepareStatement(queryselect);
+            ResultSet resultset01 = pstatement.executeQuery();
+            return resultset01;
+        } catch (Exception e) {
+        }
+        return null;
+    }
+
+    public ResultSet BuscarExamenesSin(String nombre) {
+        try {
+            String queryselect = "SELECT * FROM EXAMEN_LABORATORIO WHERE nombre!='" + nombre + "'";
             PreparedStatement pstatement = DbConnection.getConnection().prepareStatement(queryselect);
             ResultSet resultset01 = pstatement.executeQuery();
             return resultset01;
@@ -52,9 +102,37 @@ public class BuscarEnDB {
         return null;
     }
 
+    public void generarDias(ArrayList dias, String codigo) {
+        for (int i = 0; i < dias.size(); i++) {
+            Dias_Trabajados nuevoDia = new Dias_Trabajados(0, dias.get(i).toString(), codigo);
+        }
+    }
+
     public ResultSet BuscarPaciente(String codigo) {
         try {
             String queryselect = "SELECT * FROM PACIENTE WHERE codigo='" + codigo + "'";
+            PreparedStatement pstatement = DbConnection.getConnection().prepareStatement(queryselect);
+            ResultSet resultset01 = pstatement.executeQuery();
+            return resultset01;
+        } catch (Exception e) {
+        }
+        return null;
+    }
+
+    public ResultSet BuscarMedicos(String codigo) {
+        try {
+            String queryselect = "SELECT * FROM MEDICO WHERE codigo='" + codigo + "'";
+            PreparedStatement pstatement = DbConnection.getConnection().prepareStatement(queryselect);
+            ResultSet resultset01 = pstatement.executeQuery();
+            return resultset01;
+        } catch (Exception e) {
+        }
+        return null;
+    }
+
+    public ResultSet BuscarAdmin(String codigo) {
+        try {
+            String queryselect = "SELECT * FROM ADMINISTRADOR WHERE codigo='" + codigo + "'";
             PreparedStatement pstatement = DbConnection.getConnection().prepareStatement(queryselect);
             ResultSet resultset01 = pstatement.executeQuery();
             return resultset01;
@@ -139,6 +217,82 @@ public class BuscarEnDB {
             statement.setString(9, Encriptar.encriptar(password));
             statement.setString(10, codigo);
 
+            // Ejecutamos el update
+            statement.execute();
+            statement.close();
+        } catch (UnsupportedEncodingException | SQLException e) {
+            JOptionPane.showMessageDialog(null, "no se edito");
+        }
+
+    }
+
+    public void EditarAdmin(String codigo, String nombre,String DPI, String password) {
+
+        String query = "UPDATE ADMINISTRADOR SET nombre=?, DPI=?, password=? WHERE codigo=?";
+        try {
+            // Se ingresar los datos a la Query
+
+            PreparedStatement statement = DbConnection.getConnection().prepareStatement(query);
+            statement.setString(1, nombre);
+            statement.setString(2, DPI);
+            statement.setString(3, Encriptar.encriptar(password));
+            statement.setString(4, codigo);
+
+            // Ejecutamos el update
+            statement.execute();
+            statement.close();
+        } catch (UnsupportedEncodingException | SQLException e) {
+            JOptionPane.showMessageDialog(null, "no se edito");
+        }
+
+    }
+
+    public void EditarMedico(String codigo, String nombre, String numero_colegiado, String DPI, String telefono, String correo,
+            LocalTime horarioEntrada, LocalTime horarioSalida, LocalDate fecha, String password) {
+
+        String query = "UPDATE MEDICO SET nombre=?,numero_colegiado=?, DPI=?, telefono=?, correo=?, horario_entrada=?, horario_salida=?, inicio_trabajo=?,"
+                + " password=? WHERE codigo=?";
+        try {
+            // Se ingresar los datos a la Query
+
+            PreparedStatement statement = DbConnection.getConnection().prepareStatement(query);
+            statement.setString(1, nombre);
+            statement.setString(2, numero_colegiado);
+            statement.setString(3, DPI);
+            statement.setString(4, telefono);
+            statement.setString(5, correo);
+            statement.setTime(6, Time.valueOf(horarioEntrada));
+            statement.setTime(7, Time.valueOf(horarioSalida));
+            statement.setDate(8, Date.valueOf(fecha));
+            statement.setString(9, Encriptar.encriptar(password));
+            statement.setString(10, codigo);
+
+            // Ejecutamos el update
+            statement.execute();
+            statement.close();
+        } catch (UnsupportedEncodingException | SQLException e) {
+            JOptionPane.showMessageDialog(null, "no se edito");
+        }
+
+    }
+
+    public void EditarLaboratorista(String codigo, String nombre, String numero_registro, String DPI, String telefono, String correo,
+            LocalDate fecha, String password, int examen_laboratorio) {
+
+        String query = "UPDATE LABORATORISTA SET nombre=?,numero_registro=?, DPI=?, telefono=?, correo=?, fecha_inicio=?,"
+                + " password=?, examen_laboratorio_codigo=? WHERE codigo=?";
+        try {
+            // Se ingresar los datos a la Query
+            PreparedStatement statement = DbConnection.getConnection().prepareStatement(query);
+            statement.setString(1, nombre);
+            statement.setString(2, numero_registro);
+            statement.setString(3, DPI);
+            statement.setString(4, telefono);
+            statement.setString(5, correo);
+            statement.setDate(6, Date.valueOf(fecha));
+            statement.setString(7, Encriptar.encriptar(password));
+            statement.setInt(8, examen_laboratorio);
+            statement.setString(9, codigo);
             // Ejecutamos el update
             statement.execute();
             statement.close();

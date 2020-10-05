@@ -46,7 +46,7 @@
                         <label for="fnombre">Nombre</label>
                     </div>
                     <div class="col-77">
-                        <input type="text" id="lname" name="nombre" placeholder="Nombre del examen" required>
+                        <input type="text" id="lname" name="nombre" placeholder="Nombre del paciente" required>
                     </div>
                 </div>
                 <div class="row">

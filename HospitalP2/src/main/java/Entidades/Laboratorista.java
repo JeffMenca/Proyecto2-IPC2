@@ -8,6 +8,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -23,10 +24,10 @@ public class Laboratorista {
     private String correo;
     private LocalDate fecha_inicio;
     private String password;
-    private String examen_laboratorio_codigo;
+    private int examen_laboratorio_codigo;
     //Constructor
     public Laboratorista(String codigo, String nombre,String numero_registro,String DPI,
-            String telefono,String correo,LocalDate fecha_inicio,String password,String examen_laboratorio_codigo) {
+            String telefono,String correo,LocalDate fecha_inicio,String password,int examen_laboratorio_codigo) {
         this.codigo=codigo;
         this.nombre=nombre;
         this.numero_registro=numero_registro;
@@ -53,7 +54,6 @@ public class Laboratorista {
                 + " ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try {
             // Se ingresar los datos a la Query
-
             PreparedStatement statement = DbConnection.getConnection().prepareStatement(query);
             statement.setString(1, getCodigo());
             statement.setString(2, getNombre());
@@ -63,8 +63,7 @@ public class Laboratorista {
             statement.setString(6, getCorreo());
             statement.setDate(7, Date.valueOf(getFecha_inicio()));
             statement.setString(8, Encriptar.encriptar(getPassword()));
-            statement.setString(9, getExamen_laboratorio_codigo());
-
+            statement.setInt(9, getExamen_laboratorio_codigo());
             // Ejecutamos el update
             statement.execute();
             statement.close();
@@ -136,11 +135,11 @@ public class Laboratorista {
         this.password = password;
     }
 
-    public String getExamen_laboratorio_codigo() {
+    public int getExamen_laboratorio_codigo() {
         return examen_laboratorio_codigo;
     }
 
-    public void setExamen_laboratorio_codigo(String examen_laboratorio_codigo) {
+    public void setExamen_laboratorio_codigo(int examen_laboratorio_codigo) {
         this.examen_laboratorio_codigo = examen_laboratorio_codigo;
     }
 
