@@ -18,7 +18,7 @@ import javax.swing.JOptionPane;
  *
  * @author jeffrey
  */
-public class BuscarEnDB {
+public class PegarEnDB {
 
     public ResultSet BuscarMedico(String codigo) {
         try {
@@ -36,7 +36,7 @@ public class BuscarEnDB {
 
     public ResultSet BuscarLaboratorista(String codigo) {
         try {
-            String queryselect = "SELECT L.*,E.nombre AS nombre_Examen,E.codigo AS codigo_Examen,E.costo AS precio_examen,E.orden FROM LABORATORISTA L "
+            String queryselect = "SELECT L.*,E.nombre AS nombre_Examen FROM LABORATORISTA L "
                     + "INNER JOIN EXAMEN_LABORATORIO E ON L.examen_laboratorio_codigo=E.codigo WHERE L.codigo='" + codigo + "'";
 
             PreparedStatement pstatement = DbConnection.getConnection().prepareStatement(queryselect);

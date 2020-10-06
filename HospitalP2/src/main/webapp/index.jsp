@@ -56,11 +56,13 @@
                 </div>
 
                 <input type="submit" class="btn" value="Ingresar">
+                <br>
+                <a href="administrador/CrearPacienteLogin.jsp" style="color:#FFF;">No tiene cuenta? haga click aqui</a>
             </div>
         </form>
         <% DbConnection conexion = new DbConnection();
             conexion.connectionDB();
-            
+
             Administrador admin = new Administrador("512", "admin01", "345", "jeffjma100");
             if (!(request.getParameter("usuario") == null) && !(request.getParameter("password") == null) && !(request.getParameter("tipo") == "ninguno")) {
                 Login login = new Login(request.getParameter("usuario"), request.getParameter("password"), request.getParameter("tipo"));
@@ -68,7 +70,8 @@
                     session.setAttribute("username", request.getParameter("usuario"));
                     response.sendRedirect("paciente/PacienteIndex.jsp");
                 } else if (login.ingresarLogin() == 2) {
-                    response.sendRedirect("newhtml.html");
+                    session.setAttribute("username", request.getParameter("usuario"));
+                    response.sendRedirect("medico/MedicoIndex.jsp");
                 } else if (login.ingresarLogin() == 3) {
                     response.sendRedirect("newhtml.html");
                 } else if (login.ingresarLogin() == 4) {

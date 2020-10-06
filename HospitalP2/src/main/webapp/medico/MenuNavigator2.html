@@ -12,37 +12,29 @@
             <img class="logo" src="../img/logo.png" width="60" height="60" />
             <div class="header-right">
                 <div class="navbar">
-                    <a href="AdminIndex.jsp">Inicio</a>
+                    <a href="MedicoIndex.jsp">Inicio</a>
                     <div class="dropdown">
-                        <button class="dropbtn" onclick="dropExamenes()">Examenes
+                        <button class="dropbtn" onclick="dropInformacion()">Consultas
                             <i class="fa fa-caret-down"></i>
                         </button>
-                        <div class="dropdown-content" id="examenes">
-                            <a href="CrearExamen.jsp">Crear examen</a>
-                            <a href="VerExamenes.jsp">Ver y modificar examen</a>
+                        <div class="dropdown-content" id="informacion">
+                            <a href="VerCitaConsulta.jsp">Generar una consulta </a>
+                            <a href="VerCitaConsulta.jsp">Ver citas programadas</a>
+                            <a href="VerCitaConsulta.jsp">Programar nueva cita</a>
+                            <a href="VerCitaConsulta.jsp">Cancelar Cita</a>
                         </div>
                     </div>
                     <div class="dropdown">
-                        <button class="dropbtn" onclick="dropUsuarios()">Usuarios
+                        <button class="dropbtn" onclick="dropHistorial()">Historial
                             <i class="fa fa-caret-down"></i>
                         </button>
-                        <div class="dropdown-content" id="usuarios">
-                            <a href="CrearPaciente.jsp">Paciente</a>
-                            <a href="CrearMedico.jsp">Medico</a>
-                            <a href="CrearLaboratorista.jsp">Laboratorista</a>
-                            <a href="CrearAdmin.jsp">Administrador</a>
+                        <div class="dropdown-content" id="historial">
+                            <a href="#">Ver historial medico</a>
+                            <a href="#">Ver citas por realizar en el dia</a>
+                            <a href="#">Ver pacientes con mas informes</a>
                         </div>
-                    </div> 
-                    <div class="dropdown">
-                        <button class="dropbtn" onclick="dropConsultas()">Consultas
-                            <i class="fa fa-caret-down"></i>
-                        </button>
-                        <div class="dropdown-content" id="consultas">
-                            <a href="VerConsulta.jsp">Ver y modificar consulta</a>
-                        </div>
-                    </div> 
+                    </div>
                     <a href="../index.jsp">Cerrar sesion</a>
-
                 </div>
             </div>
         </div>
@@ -51,33 +43,48 @@
              toggle between hiding and showing the dropdown content */
             function dropConsultas() {
                 document.getElementById("consultas").classList.toggle("show");
-                var myDropdown2 = document.getElementById("usuarios");
-                var myDropdown3 = document.getElementById("examenes");
+                var myDropdown2 = document.getElementById("examenes");
+                var myDropdown3 = document.getElementById("historial");
+                var myDropdown4 = document.getElementById("informacion");
                 myDropdown2.classList.remove('show');
                 myDropdown3.classList.remove('show');
+                myDropdown4.classList.remove('show');
             }
-            function dropUsuarios() {
-                document.getElementById("usuarios").classList.toggle("show");
+            function dropInformacion() {
+                document.getElementById("informacion").classList.toggle("show");
                 var myDropdown2 = document.getElementById("examenes");
+                var myDropdown3 = document.getElementById("historial");
                 var myDropdown4 = document.getElementById("consultas");
                 myDropdown2.classList.remove('show');
+                myDropdown3.classList.remove('show');
                 myDropdown4.classList.remove('show');
             }
             function dropExamenes() {
                 document.getElementById("examenes").classList.toggle("show");
                 var myDropdown2 = document.getElementById("consultas");
-                var myDropdown4 = document.getElementById("usuarios");
+                var myDropdown3 = document.getElementById("historial");
+                var myDropdown4 = document.getElementById("informacion");
                 myDropdown2.classList.remove('show');
+                myDropdown3.classList.remove('show');
                 myDropdown4.classList.remove('show');
             }
-
+            function dropHistorial() {
+                document.getElementById("historial").classList.toggle("show");
+                var myDropdown2 = document.getElementById("examenes");
+                var myDropdown3 = document.getElementById("consultas");
+                var myDropdown4 = document.getElementById("informacion");
+                myDropdown2.classList.remove('show');
+                myDropdown3.classList.remove('show');
+                myDropdown4.classList.remove('show');
+            }
 
             // Close the dropdown if the user clicks outside of it
             window.onclick = function (e) {
                 if (!e.target.matches('.dropbtn')) {
                     var myDropdown = document.getElementById("consultas");
                     var myDropdown2 = document.getElementById("examenes");
-                    var myDropdown3 = document.getElementById("usuarios");
+                    var myDropdown3 = document.getElementById("historial");
+                    var myDropdown4 = document.getElementById("informacion");
                     if (myDropdown.classList.contains('show')) {
                         myDropdown.classList.remove('show');
                     }
@@ -87,7 +94,9 @@
                     if (myDropdown3.classList.contains('show')) {
                         myDropdown3.classList.remove('show');
                     }
-
+                    if (myDropdown4.classList.contains('show')) {
+                        myDropdown4.classList.remove('show');
+                    }
                 }
             };
         </script>

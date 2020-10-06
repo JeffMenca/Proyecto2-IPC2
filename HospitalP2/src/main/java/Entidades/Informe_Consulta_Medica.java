@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -20,7 +21,7 @@ import java.time.LocalTime;
 public class Informe_Consulta_Medica {
     
     //Atributos
-    private String codigo;
+    private int codigo;
     private String descripcion;
     private LocalDate fecha;
     private LocalTime hora;
@@ -30,7 +31,7 @@ public class Informe_Consulta_Medica {
     
     //Constructor
 
-    public Informe_Consulta_Medica(String codigo, String descripcion, LocalDate fecha, LocalTime hora, int consulta_medica_codigo, String paciente_codigo, String medico_codigo) {
+    public Informe_Consulta_Medica(int codigo, String descripcion, LocalDate fecha, LocalTime hora, int consulta_medica_codigo, String paciente_codigo, String medico_codigo) {
         this.codigo = codigo;
         this.descripcion = descripcion;
         this.fecha = fecha;
@@ -54,9 +55,9 @@ public class Informe_Consulta_Medica {
                 + " ?, ?, ?, ?, ?, ?, ?)";
         try {
             // Se ingresar los datos a la Query
-
+            
             PreparedStatement statement = DbConnection.getConnection().prepareStatement(query);
-            statement.setString(1, getCodigo());
+            statement.setInt(1, 0);
             statement.setString(2, getDescripcion());
             statement.setDate(3, Date.valueOf(getFecha()));
             statement.setTime(4, Time.valueOf(getHora()));
@@ -71,11 +72,11 @@ public class Informe_Consulta_Medica {
         }
     }
 
-    public String getCodigo() {
+    public int getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(String codigo) {
+    public void setCodigo(int codigo) {
         this.codigo = codigo;
     }
 

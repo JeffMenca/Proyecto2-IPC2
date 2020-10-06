@@ -12,32 +12,23 @@
             <img class="logo" src="../img/logo.png" width="60" height="60" />
             <div class="header-right">
                 <div class="navbar">
-                    <a href="#home">Inicio</a>
+                    <a href="PacienteIndex.jsp">Inicio</a>
                     <div class="dropdown">
-                        <button class="dropbtn" onclick="dropInformacion()">Informacion
+                        <button class="dropbtn" onclick="dropInformacion()">Consultas
                             <i class="fa fa-caret-down"></i>
                         </button>
                         <div class="dropdown-content" id="informacion">
-                            <a href="BuscarMedico.jsp">Buscar un medico</a>
-                            <a href="#">Buscar un laboratorista</a>
+                            <a href="BuscarMedico.jsp">Programar una consulta </a>
+                            <a href="VerCitaConsulta.jsp">Ver citas programadas</a>
                         </div>
                     </div>
-                    <div class="dropdown">
-                        <button class="dropbtn" onclick="dropConsultas()">Consultas
-                            <i class="fa fa-caret-down"></i>
-                        </button>
-                        <div class="dropdown-content" id="consultas">
-                            <a href="#">Programar cita</a>
-                            <a href="#">Ver citas programadas</a>
-                        </div>
-                    </div> 
                     <div class="dropdown">
                         <button class="dropbtn" onclick="dropExamenes()">Examenes
                             <i class="fa fa-caret-down"></i>
                         </button>
                         <div class="dropdown-content" id="examenes">
-                            <a href="#">Programar examen</a>
-                            <a href="#">Ver examenes programados</a>
+                            <a href="BuscarLaboratorista.jsp">Programar un examen </a>
+                            <a href="VerCitaExamen.jsp">Ver examenes programados</a>
                         </div>
                     </div> 
                     <div class="dropdown">
@@ -50,7 +41,7 @@
                             <a href="#">Reporte 2</a>
                         </div>
                     </div>
-
+                    <a href="../index.jsp">Cerrar sesion</a>
                 </div>
             </div>
         </div>

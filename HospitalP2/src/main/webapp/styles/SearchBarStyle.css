@@ -21,6 +21,12 @@
     color: #000000;
 }
 
+.alert2 {
+    padding: 20px;
+    background-color: #f44336;
+    color: white;
+}
+
 .searchButton {
     width: 40px;
     height: 36px;
@@ -50,6 +56,17 @@
 }
 .button {
     background-color: #60aeee; 
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 15px;
+    width: 50%;
+}
+.button2 {
+    background-color: red; 
     border: none;
     color: white;
     padding: 15px 32px;

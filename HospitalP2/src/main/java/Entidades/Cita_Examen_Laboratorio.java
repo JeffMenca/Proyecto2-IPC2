@@ -1,4 +1,3 @@
-
 package Entidades;
 
 import SQLConnector.DbConnection;
@@ -15,18 +14,17 @@ import java.time.LocalTime;
  * @author jeffrey
  */
 public class Cita_Examen_Laboratorio {
-    
+
     //Atributos
     private int codigo;
     private LocalDate fecha;
     private LocalTime hora;
     private String paciente_codigo;
-    private Blob orden;
+    private String orden;
     private String laboratorista_codigo;
-    
-    //Constructor
 
-    public Cita_Examen_Laboratorio(int codigo, LocalDate fecha, LocalTime hora, String paciente_codigo, Blob orden, String laboratorista_codigo) {
+    //Constructor
+    public Cita_Examen_Laboratorio(int codigo, LocalDate fecha, LocalTime hora, String paciente_codigo, String orden, String laboratorista_codigo) {
         this.codigo = codigo;
         this.fecha = fecha;
         this.hora = hora;
@@ -35,7 +33,8 @@ public class Cita_Examen_Laboratorio {
         this.laboratorista_codigo = laboratorista_codigo;
         this.insertarCita_Examen_Laboratorio();
     }
-     //Metodo para ingresar cita examen de laboratorio
+    //Metodo para ingresar cita examen de laboratorio
+
     public void insertarCita_Examen_Laboratorio() {
         String query = "INSERT INTO CITA_EXAMEN_LABORATORIO ("
                 + " codigo,"
@@ -53,7 +52,7 @@ public class Cita_Examen_Laboratorio {
             statement.setDate(2, Date.valueOf(getFecha()));
             statement.setTime(3, Time.valueOf(getHora()));
             statement.setString(4, getPaciente_codigo());
-            statement.setBlob(5, getOrden());
+            statement.setString(5, getOrden());
             statement.setString(6, getLaboratorista_codigo());
 
             // Ejecutamos el update
@@ -95,11 +94,11 @@ public class Cita_Examen_Laboratorio {
         this.paciente_codigo = paciente_codigo;
     }
 
-    public Blob getOrden() {
+    public String getOrden() {
         return orden;
     }
 
-    public void setOrden(Blob orden) {
+    public void setOrden(String orden) {
         this.orden = orden;
     }
 
@@ -110,5 +109,5 @@ public class Cita_Examen_Laboratorio {
     public void setLaboratorista_codigo(String laboratorista_codigo) {
         this.laboratorista_codigo = laboratorista_codigo;
     }
-    
+
 }

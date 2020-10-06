@@ -148,7 +148,7 @@
                 </div>
                 <div class="row">
                     <br> 
-                    <input type="submit" class="button2" value="Ingresar Paciente">
+                    <input type="submit" class="button2" value="Ingresar Laboratorista">
                 </div>
 
             </div>
