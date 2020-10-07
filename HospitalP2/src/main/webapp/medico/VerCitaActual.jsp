@@ -4,6 +4,7 @@
     Author     : jeffrey
 --%>
 
+<%@page import="java.time.LocalDate"%>
 <%@page import="java.sql.PreparedStatement"%>
 <%@page import="javax.swing.JOptionPane"%>
 <%@page import="java.sql.ResultSet"%>
@@ -23,7 +24,7 @@
     <body>
         <%@include  file="MenuNavigator2.html" %>
         <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br>
-        <form method="GET" action="VerCitaConsulta.jsp">
+        <form method="GET" action="VerCitaActual.jsp">
             <div class="box">
                 <select name="tipo">
                     <option value="codigo">Codigo</option>
@@ -39,7 +40,6 @@
             </div>
         </form>
         <%
-            
 
             //Acciones que se ejecutan al presionar el boton
             try {
@@ -54,20 +54,20 @@
                     if (tipo.equals("codigo")) {
                         queryselect = "SELECT C.*,M.nombre AS medico,CM.especialidad_nombre FROM CITA_CONSULTA_MEDICA C INNER JOIN MEDICO M "
                                 + "ON C.medico_codigo=M.codigo INNER JOIN CONSULTA_MEDICA CM ON C.consulta_medica_codigo=CM.codigo "
-                                + "WHERE M.codigo='"+codigoMedico+"' && C.codigo LIKE '%" + request.getParameter("filtro") + "%';";
+                                + "WHERE M.codigo='"+codigoMedico+"' && C.fecha='" + LocalDate.now() + "' && C.codigo LIKE '%" + request.getParameter("filtro") + "%';";
                         //Filtro por codigo
                     }
                 } else {
                     queryselect = "SELECT C.*,M.nombre AS medico,CM.especialidad_nombre FROM CITA_CONSULTA_MEDICA C INNER JOIN MEDICO M "
-                            + "ON C.medico_codigo=M.codigo INNER JOIN CONSULTA_MEDICA CM ON C.consulta_medica_codigo=CM.codigo "
-                            + "WHERE M.codigo='"+codigoMedico+"'";
+                            + "ON C.medico_codigo=M.codigo INNER JOIN CONSULTA_MEDICA CM ON C.consulta_medica_codigo=CM.codigo"
+                            + " WHERE M.codigo='"+codigoMedico+"' && C.fecha='" + LocalDate.now() + "'";
                 }
 
                 Statement statements = DbConnection.getConnection().createStatement();
                 ResultSet resultset01 = statements.executeQuery(queryselect);
                 // Ponemos los resultados en un table de html
         %>
-        <table id="customers"><tr><th>Codigo</th><th>Fecha</th><th>Hora</th><th>Medico</th><th>Tipo</th><th>Eliminar</th></tr>
+        <table id="customers"><tr><th>Codigo</th><th>Fecha</th><th>Hora</th><th>Medico</th><th>Tipo</th></tr>
                     <%
                         while (resultset01.next()) {
                             out.println("<tr>");
@@ -76,15 +76,15 @@
                             out.println("<td>" + resultset01.getObject("hora") + "</td>");
                             out.println("<td>" + resultset01.getObject("medico") + "</td>");
                             out.println("<td>" + resultset01.getObject("especialidad_nombre") + "</td>");
-                                        %><td><center><a class="button" href="CrearReporteConsulta.jsp?codigo=<%=resultset01.getInt("codigo")%>">Generar consulta</a></center></td><%
-                                                out.println("</tr>");
-                                            }
 
-                %></table><%                    } catch (Exception e) {
+                            out.println("</tr>");
+                        }
+
+                                        %></table><%                    } catch (Exception e) {
                         // Error en algun momento.
                         out.println("Excepcion " + e);
                         e.printStackTrace();
                     }
-        %>
-</body>
+            %>
+    </body>
 </html>

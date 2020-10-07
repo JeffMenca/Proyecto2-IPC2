@@ -28,13 +28,16 @@
     <body>
 
         <%@include  file="MenuNavigator.html" %>
-        <form method="GET" action="AgendarExamen.jsp">
+        <form method="post" action="../ServletAgendarExamen" enctype="multipart/form-data">
             <%
-
+                String fechaSeleccionado=String.valueOf(session.getAttribute("Fecha"));
                 String diaSemana[] = {"Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado"};
                 String diaPorEnviar = "";
                 try {
-                    session.setAttribute("Fecha", request.getParameter("fecha"));
+                    Date fechaSemana = Date.valueOf(fechaSeleccionado);
+                    String dia = String.valueOf(fechaSemana.getDay());
+                    int diaSeleccionado = Integer.parseInt(dia);
+                    diaPorEnviar = diaSemana[diaSeleccionado];
                 } catch (Exception e) {
                 }
 
@@ -60,6 +63,8 @@
                     codigoExamen = resultset.getInt("codigo_examen");
                     orden = resultset.getInt("orden");
                 }
+                session.setAttribute("Orden", orden);
+                session.setAttribute("Fecha", fechaSeleccionado);
 
             %>
             <br> <br> <br> <br> <br> <br> <br> 
@@ -111,18 +116,58 @@
                         <label for="fname">Fecha de la cita</label>
                     </div>
                     <div class="col-77">
-                        <input  type="date" name="fecha"
-                                value="<%= LocalDate.now()%>"
-                                min="<%= LocalDate.now()%>" max="2050-12-31">
+                        <label for="country" name="fecha"><%= fechaSeleccionado%></label>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-25">
-                        <label for="fname">Verificar disponibilidad de fecha</label>
+                        <label for="fname">Horas disponibles</label>
                     </div>
                     <div class="col-77">
-                        <input type="submit" class="button1" value="Verificar dia" name="disponible">
+                        <select id="country" name="horas">
+                            <%
+                                if (!(fechaSeleccionado == null)) {
+                                    LocalDate fecha = LocalDate.parse(fechaSeleccionado);
+                                    HorarioLaboratorista horario = new HorarioLaboratorista(codigoLaboratorista, fecha, diaPorEnviar);
+                                    ArrayList listahoras = horario.comprobarDisponibilidad();
+                                    if (listahoras.size() == 0) {
+                            %><option value="error" >No existen horas disponibles en esa fecha y en ese dia</option><%
+                                }
+                                for (int i = 0; i < listahoras.size(); i++) {
+                            %><option value="<%= listahoras.get(i)%>"><%= listahoras.get(i)%></option><%
+                                }
+                            } else {
+                            %><option value="error" >No ha comprobado disponibilidad</option><%
+                                }
+
+                                %>
+                        </select>
                     </div>
+                </div>
+                <div class="row">
+                    <div class="col-25">
+                        <label for="fpassword">Es obligatoria la orden?</label>
+                    </div>
+                    <div class="col-77">
+                        <%                            if (orden == 1) {
+                        %><label class="container">Si</label><%
+                        } else {
+                        %><label class="container">No</label><%
+                            }
+                        %>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-25">
+                        <label for="fname">Orden de examen</label>
+                    </div>
+                    <div class="col-77">
+                        <input type="file" id="file" name="file" accept=".PDF">
+                    </div>
+                </div>
+                <div class="row">
+                    <br> 
+                    <input type="submit" class="button2" name="citar" value="Programar cita">
                 </div>
 
             </div>
@@ -130,11 +175,8 @@
         </form>
 
     </body>
-    <%
-        if (request.getParameter("disponible") != null) {
-            session.setAttribute("Fecha", request.getParameter("fecha"));
-            response.sendRedirect("ConfirmarAgendarExamen.jsp");
-        }
+    <%        
+
 
     %>
 </html>

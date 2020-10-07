@@ -39,7 +39,24 @@
             </div>
         </form>
         <%
-            
+            if (!(request.getParameter("eliminar") == null)) {
+                try {
+                    String citaEliminar = request.getParameter("eliminar");
+                    String queryEliminar = "DELETE FROM CITA_CONSULTA_MEDICA WHERE codigo=?";
+                    PreparedStatement statement = DbConnection.getConnection().prepareStatement(queryEliminar);
+                    statement.setString(1, citaEliminar);
+                    statement.execute();
+                    statement.close();
+        %> 
+        <div class="alert2">
+
+            <strong>Cancelado</strong> Se cancelo la cita correctamente
+        </div>
+        <%
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, "no se elimino nada");
+                }
+            }
 
             //Acciones que se ejecutan al presionar el boton
             try {
@@ -76,7 +93,7 @@
                             out.println("<td>" + resultset01.getObject("hora") + "</td>");
                             out.println("<td>" + resultset01.getObject("medico") + "</td>");
                             out.println("<td>" + resultset01.getObject("especialidad_nombre") + "</td>");
-                                        %><td><center><a class="button" href="CrearReporteConsulta.jsp?codigo=<%=resultset01.getInt("codigo")%>">Generar consulta</a></center></td><%
+                                        %><td><center><a class="button2" href="CancelarCita.jsp?eliminar=<%=resultset01.getInt("codigo")%>">Cancelar consulta</a></center></td><%
                                                 out.println("</tr>");
                                             }
 

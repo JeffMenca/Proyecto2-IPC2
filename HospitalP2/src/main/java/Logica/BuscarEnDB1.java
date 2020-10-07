@@ -73,5 +73,15 @@ public class BuscarEnDB1 {
         }
         return null;
     }
+    public ResultSet BuscarOrden(int codigo) {
+        try {
+            String queryselect = "SELECT * FROM ORDEN_EXAMEN WHERE orden_examen_codigo='" + codigo + "'";
+            PreparedStatement pstatement = DbConnection.getConnection().prepareStatement(queryselect);
+            ResultSet resultset01 = pstatement.executeQuery();
+            return resultset01;
+        } catch (Exception e) {
+        }
+        return null;
+    }
 
 }

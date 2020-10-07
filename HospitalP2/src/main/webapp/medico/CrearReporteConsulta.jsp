@@ -4,6 +4,8 @@
     Author     : jeffrey
 --%>
 
+<%@page import="java.sql.PreparedStatement"%>
+<%@page import="SQLConnector.DbConnection"%>
 <%@page import="Entidades.Informe_Consulta_Medica"%>
 <%@page import="Logica.BuscarEnDB1"%>
 <%@page import="Entidades.Medico"%>
@@ -122,10 +124,16 @@
                 try {
                     Informe_Consulta_Medica nuevoInforme = new Informe_Consulta_Medica(0, request.getParameter("descripcion"), LocalDate.now(),
                             LocalTime.now(), codigoConsulta, codigoPaciente, codigoMedico);
+                    String citaEliminar = String.valueOf(codigoCita);
+                    String queryEliminar = "DELETE FROM CITA_CONSULTA_MEDICA WHERE codigo=?";
+                    PreparedStatement statement = DbConnection.getConnection().prepareStatement(queryEliminar);
+                    statement.setString(1, codigoCitaConsulta);
+                    statement.execute();
+                    statement.close();
     %> 
     <div class="alert1">
         <span class="closebtn"> 
-            <strong>Creado</strong> El medico se creo exitosamente
+            <strong>Creado</strong> Se creo la consulta y se genero el reporte
     </div>
     <%
                 } catch (Exception e) {

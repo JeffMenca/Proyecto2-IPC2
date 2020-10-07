@@ -2,6 +2,7 @@
 package Entidades;
 
 import SQLConnector.DbConnection;
+import java.io.FileInputStream;
 import java.sql.Blob;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -14,12 +15,12 @@ import java.sql.SQLException;
 public class Orden_PDF {
     
      //Atributos
-    private Blob archivo;
+    private FileInputStream archivo;
     private int orden_examen_codigo;
     
     //Constructor
 
-    public Orden_PDF(Blob archivo, int orden_examen_codigo) {
+    public Orden_PDF(FileInputStream archivo, int orden_examen_codigo) {
         this.archivo = archivo;
         this.orden_examen_codigo = orden_examen_codigo;
         this.insertarOrden_PDF();
@@ -44,11 +45,11 @@ public class Orden_PDF {
         }
     }
 
-    public Blob getArchivo() {
+    public FileInputStream getArchivo() {
         return archivo;
     }
 
-    public void setArchivo(Blob archivo) {
+    public void setArchivo(FileInputStream archivo) {
         this.archivo = archivo;
     }
 

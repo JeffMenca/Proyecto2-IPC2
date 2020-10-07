@@ -1,6 +1,7 @@
 package Entidades;
 
 import SQLConnector.DbConnection;
+import java.io.InputStream;
 import java.sql.Blob;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -20,11 +21,11 @@ public class Cita_Examen_Laboratorio {
     private LocalDate fecha;
     private LocalTime hora;
     private String paciente_codigo;
-    private String orden;
+    private InputStream orden;
     private String laboratorista_codigo;
 
     //Constructor
-    public Cita_Examen_Laboratorio(int codigo, LocalDate fecha, LocalTime hora, String paciente_codigo, String orden, String laboratorista_codigo) {
+    public Cita_Examen_Laboratorio(int codigo, LocalDate fecha, LocalTime hora, String paciente_codigo, InputStream orden, String laboratorista_codigo) {
         this.codigo = codigo;
         this.fecha = fecha;
         this.hora = hora;
@@ -52,7 +53,7 @@ public class Cita_Examen_Laboratorio {
             statement.setDate(2, Date.valueOf(getFecha()));
             statement.setTime(3, Time.valueOf(getHora()));
             statement.setString(4, getPaciente_codigo());
-            statement.setString(5, getOrden());
+            statement.setBlob(5, getOrden());
             statement.setString(6, getLaboratorista_codigo());
 
             // Ejecutamos el update
@@ -94,11 +95,11 @@ public class Cita_Examen_Laboratorio {
         this.paciente_codigo = paciente_codigo;
     }
 
-    public String getOrden() {
+    public InputStream getOrden() {
         return orden;
     }
 
-    public void setOrden(String orden) {
+    public void setOrden(InputStream orden) {
         this.orden = orden;
     }
 

@@ -14,16 +14,16 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Citas ya programadas</title>
+        <title>Ver ordenes</title>
         <link rel="stylesheet" href="../styles/TableStyle.css">
         <link rel="stylesheet" href="../styles/SearchBarStyle.css?3.0">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 
     </head>
     <body>
-        <%@include  file="MenuNavigator2.html" %>
+        <%@include  file="MenuNavigator.html" %>
         <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br>
-        <form method="GET" action="VerCitaConsulta.jsp">
+        <form method="GET" action="VerOrdenes.jsp">
             <div class="box">
                 <select name="tipo">
                     <option value="codigo">Codigo</option>
@@ -39,46 +39,45 @@
             </div>
         </form>
         <%
-            
 
             //Acciones que se ejecutan al presionar el boton
             try {
                 //Variables de filtro y del tipo
-                String codigoMedico = String.valueOf(session.getAttribute("username"));
+                String codigoPaciente = String.valueOf(session.getAttribute("username"));
                 String queryselect = "";
                 String tipo = request.getParameter("tipo");
                 String filtro = request.getParameter("filtro");
                 //Verificacion del filtro
                 if (!(filtro == null)) {
-                    //Filtro por nombre
+                    //Filtro por codigo
                     if (tipo.equals("codigo")) {
-                        queryselect = "SELECT C.*,M.nombre AS medico,CM.especialidad_nombre FROM CITA_CONSULTA_MEDICA C INNER JOIN MEDICO M "
-                                + "ON C.medico_codigo=M.codigo INNER JOIN CONSULTA_MEDICA CM ON C.consulta_medica_codigo=CM.codigo "
-                                + "WHERE M.codigo='"+codigoMedico+"' && C.codigo LIKE '%" + request.getParameter("filtro") + "%';";
-                        //Filtro por codigo
+                        queryselect = "SELECT PDF.*,P.nombre,L.nombre AS tipo FROM ORDEN_PDF PDF INNER JOIN ORDEN_EXAMEN O "
+                                + "ON PDF.orden_examen_codigo=O.codigo INNER JOIN PACIENTE P ON O.paciente_codigo=P.codigo "
+                                + "INNER JOIN EXAMEN_LABORATORIO L ON O.examen_laboratorio_codigo=L.codigo "
+                                + "WHERE P.codigo='" + codigoPaciente + "' && PDF.orden_examen_codigo LIKE '%" + request.getParameter("filtro") + "%';";
+                        //Sin filtro
                     }
                 } else {
-                    queryselect = "SELECT C.*,M.nombre AS medico,CM.especialidad_nombre FROM CITA_CONSULTA_MEDICA C INNER JOIN MEDICO M "
-                            + "ON C.medico_codigo=M.codigo INNER JOIN CONSULTA_MEDICA CM ON C.consulta_medica_codigo=CM.codigo "
-                            + "WHERE M.codigo='"+codigoMedico+"'";
+                    queryselect = "SELECT PDF.*,P.nombre,L.nombre AS tipo FROM ORDEN_PDF PDF INNER JOIN ORDEN_EXAMEN O "
+                            + "ON PDF.orden_examen_codigo=O.codigo INNER JOIN PACIENTE P ON O.paciente_codigo=P.codigo "
+                            + "INNER JOIN EXAMEN_LABORATORIO L ON O.examen_laboratorio_codigo=L.codigo "
+                            + "WHERE P.codigo='" + codigoPaciente + "'";
                 }
 
                 Statement statements = DbConnection.getConnection().createStatement();
                 ResultSet resultset01 = statements.executeQuery(queryselect);
                 // Ponemos los resultados en un table de html
         %>
-        <table id="customers"><tr><th>Codigo</th><th>Fecha</th><th>Hora</th><th>Medico</th><th>Tipo</th><th>Eliminar</th></tr>
+        <table id="customers"><tr><th>Codigo</th><th>Paciente</th><th>Examen</th><th>Descargar orden</th></tr>
                     <%
                         while (resultset01.next()) {
                             out.println("<tr>");
-                            out.println("<td>" + resultset01.getObject("codigo") + "</td>");
-                            out.println("<td>" + resultset01.getObject("fecha") + "</td>");
-                            out.println("<td>" + resultset01.getObject("hora") + "</td>");
-                            out.println("<td>" + resultset01.getObject("medico") + "</td>");
-                            out.println("<td>" + resultset01.getObject("especialidad_nombre") + "</td>");
-                                        %><td><center><a class="button" href="CrearReporteConsulta.jsp?codigo=<%=resultset01.getInt("codigo")%>">Generar consulta</a></center></td><%
-                                                out.println("</tr>");
-                                            }
+                            out.println("<td>" + resultset01.getObject("orden_examen_codigo") + "</td>");
+                            out.println("<td>" + resultset01.getObject("nombre") + "</td>");
+                            out.println("<td>" + resultset01.getObject("tipo") + "</td>");
+                            %><td><center><a class="button" href="../ServletDescargarOrden?ordenExamen=<%=resultset01.getInt("orden_examen_codigo")%>">Descargar</a></center></td><%
+                                    out.println("</tr>");
+                                }
 
                 %></table><%                    } catch (Exception e) {
                         // Error en algun momento.
