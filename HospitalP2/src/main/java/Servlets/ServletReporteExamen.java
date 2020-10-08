@@ -124,7 +124,7 @@ public class ServletReporteExamen extends HttpServlet {
                 document.add(para3);
                 document.add(para4);
                 document.close();
-                String pdfFileName = "Ordenes/orden" + codigoPaciente + examenCodigo + ".pdf";
+                String pdfFileName = "Examenes/examen" + codigoPaciente + examenCodigo + ".pdf";
                 String contextPath = getServletContext().getRealPath(File.separator);
                 File pdfFile = new File(contextPath + pdfFileName);
 

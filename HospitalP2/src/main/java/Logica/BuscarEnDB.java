@@ -20,11 +20,25 @@ import javax.swing.JOptionPane;
  */
 public class BuscarEnDB {
 
-    public ResultSet BuscarMedico(String codigo) {
+    public ResultSet BuscarMedico() {
         try {
             String queryselect = "SELECT M.*,E.especialidad_nombre,C.costo FROM MEDICO M "
                     + "INNER JOIN ESPECIALIZACION E ON M.codigo=E.medico_codigo INNER JOIN CONSULTA_MEDICA C "
-                    + "ON E.especialidad_nombre=C.especialidad_nombre WHERE M.codigo='" + codigo + "'";
+                    + "ON E.especialidad_nombre=C.especialidad_nombre";
+
+            PreparedStatement pstatement = DbConnection.getConnection().prepareStatement(queryselect);
+            ResultSet resultset01 = pstatement.executeQuery();
+            return resultset01;
+        } catch (Exception e) {
+        }
+        return null;
+    }
+
+    public ResultSet BuscarTodosMedico() {
+        try {
+            String queryselect = "SELECT M.*,E.especialidad_nombre,C.costo FROM MEDICO M "
+                    + "INNER JOIN ESPECIALIZACION E ON M.codigo=E.medico_codigo INNER JOIN CONSULTA_MEDICA C "
+                    + "ON E.especialidad_nombre=C.especialidad_nombre";
 
             PreparedStatement pstatement = DbConnection.getConnection().prepareStatement(queryselect);
             ResultSet resultset01 = pstatement.executeQuery();
@@ -226,7 +240,7 @@ public class BuscarEnDB {
 
     }
 
-    public void EditarAdmin(String codigo, String nombre,String DPI, String password) {
+    public void EditarAdmin(String codigo, String nombre, String DPI, String password) {
 
         String query = "UPDATE ADMINISTRADOR SET nombre=?, DPI=?, password=? WHERE codigo=?";
         try {

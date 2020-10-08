@@ -213,25 +213,6 @@ CREATE TABLE IF NOT EXISTS DIAS_TRABAJADOS (
   FOREIGN KEY (laboratorista_codigo) REFERENCES LABORATORISTA(codigo)
 );
 
-  -- -----------------------------------------------------
--- Tabla Informe PDF`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS INFORME_PDF (
-  archivo LONGBLOB NOT NULL ,
-  informe_examen_laboratorio_codigo INT NOT NULL,
-  PRIMARY KEY (informe_examen_laboratorio_codigo),
-  FOREIGN KEY (informe_examen_laboratorio_codigo) REFERENCES INFORME_EXAMEN_LABORATORIO(codigo)
-);
-
-  -- -----------------------------------------------------
--- Tabla Orden PDF`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS ORDEN_PDF (
-  archivo LONGBLOB NOT NULL ,
-  orden_examen_codigo INT NOT NULL,
-  PRIMARY KEY (orden_examen_codigo),
-  FOREIGN KEY (orden_examen_codigo) REFERENCES ORDEN_EXAMEN(codigo)
-);
 
 
 

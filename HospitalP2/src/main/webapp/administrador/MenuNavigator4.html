@@ -29,6 +29,7 @@
                         <div class="dropdown-content" id="usuarios">
                             <a href="CrearPaciente.jsp">Paciente</a>
                             <a href="CrearMedico.jsp">Medico</a>
+                            <a href="VerMedicoEspecialidad.jsp">Agregar especialidad al medico</a>
                             <a href="CrearLaboratorista.jsp">Laboratorista</a>
                             <a href="CrearAdmin.jsp">Administrador</a>
                         </div>
@@ -40,7 +41,20 @@
                         <div class="dropdown-content" id="consultas">
                             <a href="VerConsulta.jsp">Ver y modificar consulta</a>
                         </div>
-                    </div> 
+                    </div>
+                    <div class="dropdown">
+                        <button class="dropbtn" onclick="dropReportes()">Reportes
+                            <i class="fa fa-caret-down"></i>
+                        </button>
+                        <div class="dropdown-content" id="reportes">
+                            <a href="VerMedicosInformes.jsp">Ver medicos con mas informes</a>
+                            <a href="VerMedicoIngresos.jsp">Ingresos obtenidos por medico</a>
+                            <a href="VerCincoMedicosMenos.jsp">Ver 5 medicos con menos cantidad de consultas</a>
+                            <a href="VerExamenesDemandados.jsp">Examenes de laboratorio mas demandados</a>
+                            <a href="VerMedicoOrdenes.jsp">Medicos que mas ordenes han generado</a>
+                            <a href="VerPacienteIngresos.jsp">Ingresos generados por paciente</a>
+                        </div>
+                    </div>
                     <a href="../index.jsp">Cerrar sesion</a>
 
                 </div>
@@ -51,24 +65,39 @@
              toggle between hiding and showing the dropdown content */
             function dropConsultas() {
                 document.getElementById("consultas").classList.toggle("show");
-                var myDropdown2 = document.getElementById("usuarios");
-                var myDropdown3 = document.getElementById("examenes");
+                var myDropdown = document.getElementById("usuarios");
+                var myDropdown2 = document.getElementById("examenes");
+                var myDropdown3 = document.getElementById("reportes");
+                myDropdown.classList.remove('show');
                 myDropdown2.classList.remove('show');
                 myDropdown3.classList.remove('show');
             }
             function dropUsuarios() {
                 document.getElementById("usuarios").classList.toggle("show");
-                var myDropdown2 = document.getElementById("examenes");
-                var myDropdown4 = document.getElementById("consultas");
+                var myDropdown = document.getElementById("examenes");
+                var myDropdown2 = document.getElementById("consultas");
+                var myDropdown3 = document.getElementById("reportes");
+                myDropdown.classList.remove('show');
                 myDropdown2.classList.remove('show');
-                myDropdown4.classList.remove('show');
+                myDropdown3.classList.remove('show');
             }
             function dropExamenes() {
                 document.getElementById("examenes").classList.toggle("show");
-                var myDropdown2 = document.getElementById("consultas");
-                var myDropdown4 = document.getElementById("usuarios");
+                var myDropdown = document.getElementById("consultas");
+                var myDropdown2 = document.getElementById("usuarios");
+                var myDropdown3 = document.getElementById("reportes");
+                myDropdown.classList.remove('show');
                 myDropdown2.classList.remove('show');
-                myDropdown4.classList.remove('show');
+                myDropdown3.classList.remove('show');
+            }
+            function dropReportes() {
+                document.getElementById("reportes").classList.toggle("show");
+                var myDropdown = document.getElementById("consultas");
+                var myDropdown2 = document.getElementById("usuarios");
+                var myDropdown3 = document.getElementById("examenes");
+                myDropdown.classList.remove('show');
+                myDropdown2.classList.remove('show');
+                myDropdown3.classList.remove('show');
             }
 
 
@@ -78,6 +107,7 @@
                     var myDropdown = document.getElementById("consultas");
                     var myDropdown2 = document.getElementById("examenes");
                     var myDropdown3 = document.getElementById("usuarios");
+                    var myDropdown4 = document.getElementById("reportes");
                     if (myDropdown.classList.contains('show')) {
                         myDropdown.classList.remove('show');
                     }
@@ -86,6 +116,9 @@
                     }
                     if (myDropdown3.classList.contains('show')) {
                         myDropdown3.classList.remove('show');
+                    }
+                    if (myDropdown4.classList.contains('show')) {
+                        myDropdown4.classList.remove('show');
                     }
 
                 }

@@ -20,7 +20,7 @@
 
     </head>
     <body>
-        <%@include  file="MenuNavigator2.html" %>
+        <%@include  file="MenuNavigator.html" %>
         <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br>
         <form method="GET" action="VerPaciente.jsp">
 
@@ -28,7 +28,7 @@
         </form>
         <h2 style="color:white;">Consultas</h2>
         <%
-            String codigoPaciente = request.getParameter("codigo");
+            String codigoPaciente = String.valueOf(session.getAttribute("username"));
             //Acciones que se ejecutan al presionar el boton
             try {
                 //Variables de filtro y del tipo

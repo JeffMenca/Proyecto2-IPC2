@@ -62,8 +62,7 @@
         </form>
         <% DbConnection conexion = new DbConnection();
             conexion.connectionDB();
-
-            Administrador admin = new Administrador("512", "admin01", "345", "jeffjma100");
+            Administrador adminDefault = new Administrador("123", "admin", "123", "123");
             if (!(request.getParameter("usuario") == null) && !(request.getParameter("password") == null) && !(request.getParameter("tipo") == "ninguno")) {
                 Login login = new Login(request.getParameter("usuario"), request.getParameter("password"), request.getParameter("tipo"));
                 if (login.ingresarLogin() == 1) {

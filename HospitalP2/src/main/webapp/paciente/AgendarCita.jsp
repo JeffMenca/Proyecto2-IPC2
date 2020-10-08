@@ -4,6 +4,7 @@
     Author     : jeffrey
 --%>
 
+<%@page import="Logica.BuscarEnDB1"%>
 <%@page import="Entidades.Cita_Consulta_Medica"%>
 <%@page import="java.time.LocalTime"%>
 <%@page import="java.util.ArrayList"%>
@@ -34,7 +35,8 @@
                 }
 
                 String codigoMedico = String.valueOf(session.getAttribute("Medico"));
-                BuscarEnDB buscador = new BuscarEnDB();
+                BuscarEnDB1 buscador = new BuscarEnDB1();
+                BuscarEnDB buscador2 = new BuscarEnDB();
                 ResultSet resultset = buscador.BuscarMedico(codigoMedico);
                 String nombre = "", costo = "", especialidad = "", consulta = "";
                 while (resultset.next()) {
@@ -42,7 +44,7 @@
                     costo = resultset.getString("costo");
                     especialidad = resultset.getString("especialidad_nombre");
                 }
-                ResultSet resultset2 = buscador.BuscarConsultaEspecialidad(especialidad);
+                ResultSet resultset2 = buscador2.BuscarConsultaEspecialidad(especialidad);
                 while (resultset2.next()) {
                     consulta = resultset2.getString("codigo");
                 }

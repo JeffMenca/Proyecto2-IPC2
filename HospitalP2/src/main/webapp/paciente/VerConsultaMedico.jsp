@@ -4,6 +4,7 @@
     Author     : jeffrey
 --%>
 
+<%@page import="Logica.BuscarEnDB"%>
 <%@page import="java.time.LocalDate"%>
 <%@page import="java.sql.PreparedStatement"%>
 <%@page import="javax.swing.JOptionPane"%>
@@ -15,29 +16,46 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Examenes realizados en el dia</title>
+        <title>Consultas por medico</title>
         <link rel="stylesheet" href="../styles/TableStyle.css">
         <link rel="stylesheet" href="../styles/SearchBarStyle.css?3.0">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 
     </head>
     <body>
-        <%@include  file="MenuNavigator3.html" %>
+        <%@include  file="MenuNavigator.html" %>
         <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br>
-        <form method="GET" action="VerInformeDia.jsp">
-            <h2 style="color:white;">Examenes realiazados en el dia</h2>
+        <form method="GET" action="VerConsultaMedico.jsp">
+            <h2 style="color:white;">Ver consultas por medico</h2>
             <div class="box">
-                <select name="tipo">
-                    <option value="codigo">Codigo</option>
+
+
+
+
+                <select id="country" name="filtro">
+                    <%
+
+                        BuscarEnDB buscador = new BuscarEnDB();
+                        ResultSet resultados = buscador.BuscarTodosMedico();
+                        while (resultados.next()) {
+                    %><option value="<%= resultados.getInt("codigo")%>"><%= resultados.getString("nombre")%></option><%
+                        }
+                    %>
                 </select>
-            </div>
-            <div class="wrap">
-                <div class="search">
-                    <input type="text" name="filtro" class="searchTerm" placeholder="Que desea buscar?">
-                    <button type="submit" class="searchButton">
-                        <i class="fa fa-search"></i>
-                    </button>
-                </div>
+
+
+                <label for="fname" style="color: white" >Fecha inicio</label>
+                <input  type="date" name="fechainicio"
+                        value="<%= LocalDate.now()%>"
+                        min="1990-12-31" max="2050-12-31">
+                <label for="fname" style="color: white">Fecha final</label>
+                <input  type="date" name="fechafinal"
+                        value="<%= LocalDate.now()%>"
+                        min="1990-12-31" max="2050-12-31">
+                <button type="submit" name="intervalo" class="searchButton">
+                    <i class="fa fa-search"></i>
+                </button>
+
             </div>
         </form>
         <%
@@ -45,40 +63,30 @@
             //Acciones que se ejecutan al presionar el boton
             try {
                 //Variables de filtro y del tipo
-                String codigoLab = String.valueOf(session.getAttribute("username"));
+                String codigoPaciente = String.valueOf(session.getAttribute("username"));
                 String queryselect = "";
                 String tipo = request.getParameter("tipo");
                 String filtro = request.getParameter("filtro");
                 //Verificacion del filtro
-                if (!(filtro == null)) {
-                    //Filtro por nombre
-                    if (tipo.equals("codigo")) {
-                        queryselect = "SELECT I.*,P.nombre AS paciente,E.nombre AS examen_nombre FROM INFORME_EXAMEN_LABORATORIO I INNER JOIN PACIENTE P "
-                            + "ON I.paciente_codigo=P.codigo INNER JOIN EXAMEN_LABORATORIO E ON I.examen_laboratorio_codigo=E.codigo "
-                            + "WHERE I.fecha='" + LocalDate.now() + "' && I.laboratorista_codigo='" + codigoLab + "' && I.codigo LIKE '%" + request.getParameter("filtro") + "%';";
-                        //Filtro por codigo
-                    }
-                    
-                } else {
-                    queryselect = "SELECT I.*,P.nombre AS paciente,E.nombre AS examen_nombre FROM INFORME_EXAMEN_LABORATORIO I INNER JOIN PACIENTE P "
-                            + "ON I.paciente_codigo=P.codigo INNER JOIN EXAMEN_LABORATORIO E ON I.examen_laboratorio_codigo=E.codigo "
-                            + "WHERE I.fecha='" + LocalDate.now() + "' && I.laboratorista_codigo='" + codigoLab + "'";
-                }
+
+                queryselect = "SELECT I.*,C.especialidad_nombre FROM INFORME_CONSULTA_MEDICA I INNER JOIN CONSULTA_MEDICA C ON C.codigo=I.consulta_medica_codigo "
+                        + "WHERE I.paciente_codigo='" + codigoPaciente + "' && I.medico_codigo='" + filtro + "' && I.fecha BETWEEN '"
+                        + request.getParameter("fechainicio") + "' AND '" + request.getParameter("fechafinal") + "';";
 
                 Statement statements = DbConnection.getConnection().createStatement();
                 ResultSet resultset01 = statements.executeQuery(queryselect);
                 // Ponemos los resultados en un table de html
         %>
-        <table id="customers"><tr><th>Codigo</th><th>Fecha</th><th>Hora</th><th>Paciente</th><th>Examen</th></tr>
+        <table id="customers"><tr><th>Codigo</th><th>Descripcion</th><th>Fecha</th><th>Hora</th><th>Especialidad</th><th>Codigo de Medico</th></tr>
                     <%
                         while (resultset01.next()) {
                             out.println("<tr>");
                             out.println("<td>" + resultset01.getObject("codigo") + "</td>");
+                            out.println("<td>" + resultset01.getObject("descripcion") + "</td>");
                             out.println("<td>" + resultset01.getObject("fecha") + "</td>");
                             out.println("<td>" + resultset01.getObject("hora") + "</td>");
-                            out.println("<td>" + resultset01.getObject("paciente") + "</td>");
-                            out.println("<td>" + resultset01.getObject("examen_nombre") + "</td>");
-
+                            out.println("<td>" + resultset01.getObject("especialidad_nombre") + "</td>");
+                            out.println("<td>" + resultset01.getObject("medico_codigo") + "</td>");
                             out.println("</tr>");
                         }
 

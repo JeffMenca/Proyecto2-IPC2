@@ -23,6 +23,7 @@
         <%@include  file="MenuNavigator2.html" %>
         <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br>
         <form method="GET" action="VerPaciente.jsp">
+            <h2 style="color:white;">Seleccione el paciente</h2>
             <div class="box">
                 <select name="tipo">
                     <option value="codigo">Codigo</option>

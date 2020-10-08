@@ -95,7 +95,7 @@
                 </div>
                 <div class="row">
                     <br> 
-                    <input type="submit" class="button2" name="botonEditar" onclick="exito()" value="Editar examen de laboratorio">
+                    <input type="submit" class="button2" name="botonEditar" onclick="exito()" value="Editar admin">
                 </div>
 
             </div>

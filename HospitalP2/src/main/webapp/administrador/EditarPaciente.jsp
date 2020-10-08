@@ -147,7 +147,7 @@
                         <label for="fname">Password</label>
                     </div>
                     <div class="col-77">
-                        <input type="text" id="lpassword" name="password" value="<%= password%>" required >
+                        <input type="password" id="lpassword" name="password" value="<%= password%>" required >
                     </div>
                 </div>
                 <div class="row">

@@ -81,7 +81,7 @@
                             out.println("<td>" + resultset01.getObject("peso") + "</td>");
                             out.println("<td>" + resultset01.getObject("tipo_sangre") + "</td>");
                             out.println("<td>" + resultset01.getObject("correo") + "</td>");
-                            %><td><center><a class="button" href="EditarPaciente.jsp?codigo=<%=resultset01.getInt("codigo")%>">Editar Paciente</a></center></td><%
+                            %><td><center><a class="button" href="EditarPaciente.jsp?codigo=<%=resultset01.getString("codigo")%>">Editar Paciente</a></center></td><%
                                             out.println("</tr>");
                                         }
 

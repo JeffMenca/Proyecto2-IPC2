@@ -51,33 +51,31 @@
                 if (!(filtro == null)) {
                     //Filtro por codigo
                     if (tipo.equals("codigo")) {
-                        queryselect = "SELECT PDF.*,P.nombre,L.nombre AS tipo FROM ORDEN_PDF PDF INNER JOIN ORDEN_EXAMEN O "
-                                + "ON PDF.orden_examen_codigo=O.codigo INNER JOIN PACIENTE P ON O.paciente_codigo=P.codigo "
-                                + "INNER JOIN EXAMEN_LABORATORIO L ON O.examen_laboratorio_codigo=L.codigo "
-                                + "WHERE P.codigo='" + codigoPaciente + "' && PDF.orden_examen_codigo LIKE '%" + request.getParameter("filtro") + "%';";
+                        queryselect = "SELECT O.*,E.nombre FROM ORDEN_EXAMEN O INNER JOIN EXAMEN_LABORATORIO E ON "
+                                + "E.codigo=O.examen_laboratorio_codigo WHERE O.paciente_codigo='" + codigoPaciente + "' "
+                                + "&& O.codigo LIKE '%" + request.getParameter("filtro") + "%';";
                         //Sin filtro
                     }
                 } else {
-                    queryselect = "SELECT PDF.*,P.nombre,L.nombre AS tipo FROM ORDEN_PDF PDF INNER JOIN ORDEN_EXAMEN O "
-                            + "ON PDF.orden_examen_codigo=O.codigo INNER JOIN PACIENTE P ON O.paciente_codigo=P.codigo "
-                            + "INNER JOIN EXAMEN_LABORATORIO L ON O.examen_laboratorio_codigo=L.codigo "
-                            + "WHERE P.codigo='" + codigoPaciente + "'";
+                    queryselect = "SELECT O.*,E.nombre FROM ORDEN_EXAMEN O INNER JOIN EXAMEN_LABORATORIO E ON "
+                            + "E.codigo=O.examen_laboratorio_codigo WHERE O.paciente_codigo='" + codigoPaciente + "'";
                 }
 
                 Statement statements = DbConnection.getConnection().createStatement();
                 ResultSet resultset01 = statements.executeQuery(queryselect);
                 // Ponemos los resultados en un table de html
         %>
-        <table id="customers"><tr><th>Codigo</th><th>Paciente</th><th>Examen</th><th>Descargar orden</th></tr>
+        <table id="customers"><tr><th>Codigo</th><th>Descripcion</th><th>Examen</th><th>Codigo de Medico</th><th>Descargar orden</th></tr>
                     <%
                         while (resultset01.next()) {
                             out.println("<tr>");
-                            out.println("<td>" + resultset01.getObject("orden_examen_codigo") + "</td>");
+                            out.println("<td>" + resultset01.getObject("codigo") + "</td>");
+                            out.println("<td>" + resultset01.getObject("descripcion") + "</td>");
                             out.println("<td>" + resultset01.getObject("nombre") + "</td>");
-                            out.println("<td>" + resultset01.getObject("tipo") + "</td>");
-                            %><td><center><a class="button" href="../ServletDescargarOrden?ordenExamen=<%=resultset01.getInt("orden_examen_codigo")%>">Descargar</a></center></td><%
-                                    out.println("</tr>");
-                                }
+                            out.println("<td>" + resultset01.getObject("medico_codigo") + "</td>");
+                                    %><td><center><a class="button" href="../ServletDescargarOrden?ordenExamen=<%=resultset01.getInt("codigo")%>">Descargar</a></center></td><%
+                                        out.println("</tr>");
+                                    }
 
                 %></table><%                    } catch (Exception e) {
                         // Error en algun momento.

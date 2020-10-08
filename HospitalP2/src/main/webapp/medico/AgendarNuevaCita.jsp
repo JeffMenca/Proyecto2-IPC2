@@ -4,6 +4,7 @@
     Author     : jeffrey
 --%>
 
+<%@page import="Logica.BuscarEnDB1"%>
 <%@page import="Entidades.Cita_Consulta_Medica"%>
 <%@page import="java.time.LocalTime"%>
 <%@page import="java.util.ArrayList"%>
@@ -35,7 +36,8 @@
 
                 String codigoPaciente = String.valueOf(session.getAttribute("Medico"));
                 BuscarEnDB buscador = new BuscarEnDB();
-                ResultSet resultset = buscador.BuscarMedico(codigoMedico);
+                BuscarEnDB1 buscador2 = new BuscarEnDB1();
+                ResultSet resultset = buscador2.BuscarMedico(codigoMedico);
                 String nombre = "", costo = "", especialidad = "", consulta = "";
                 while (resultset.next()) {
                     nombre = resultset.getString("nombre");

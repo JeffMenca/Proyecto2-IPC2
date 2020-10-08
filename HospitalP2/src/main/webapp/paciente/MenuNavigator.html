@@ -29,6 +29,7 @@
                         <div class="dropdown-content" id="examenes">
                             <a href="BuscarLaboratorista.jsp">Programar un examen </a>
                             <a href="VerCitaExamen.jsp">Ver examenes programados</a>
+                            <a href="VerOrdenes.jsp">Ver ordenes de examen</a>
                         </div>
                     </div> 
                     <div class="dropdown">
@@ -36,9 +37,11 @@
                             <i class="fa fa-caret-down"></i>
                         </button>
                         <div class="dropdown-content" id="historial">
-                            <a href="#">Historial medico</a>
-                            <a href="#">Reporte 1</a>
-                            <a href="#">Reporte 2</a>
+                            <a href="VerHistorial.jsp">Historial medico</a>
+                            <a href="VerCincoExamenes.jsp">Ultimos 5 examenes realizados</a>
+                            <a href="VerExamenesTipo.jsp">Examenes realizados por tipo</a>
+                            <a href="VerCincoConsultas.jsp">Ultimas 5 consultas realizadas</a>
+                            <a href="VerConsultaMedico.jsp">Consultas realizadas por medico</a>
                         </div>
                     </div>
                     <a href="../index.jsp">Cerrar sesion</a>
@@ -48,50 +51,35 @@
         <script>
             /* When the user clicks on the button, 
              toggle between hiding and showing the dropdown content */
-            function dropConsultas() {
-                document.getElementById("consultas").classList.toggle("show");
-                var myDropdown2 = document.getElementById("examenes");
-                var myDropdown3 = document.getElementById("historial");
-                var myDropdown4 = document.getElementById("informacion");
-                myDropdown2.classList.remove('show');
-                myDropdown3.classList.remove('show');
-                myDropdown4.classList.remove('show');
-            }
+
             function dropInformacion() {
                 document.getElementById("informacion").classList.toggle("show");
-                var myDropdown2 = document.getElementById("examenes");
-                var myDropdown3 = document.getElementById("historial");
-                var myDropdown4 = document.getElementById("consultas");
+                var myDropdown = document.getElementById("examenes");
+                var myDropdown2 = document.getElementById("historial");
                 myDropdown2.classList.remove('show');
-                myDropdown3.classList.remove('show');
-                myDropdown4.classList.remove('show');
+                myDropdown.classList.remove('show');
             }
             function dropExamenes() {
                 document.getElementById("examenes").classList.toggle("show");
-                var myDropdown2 = document.getElementById("consultas");
-                var myDropdown3 = document.getElementById("historial");
-                var myDropdown4 = document.getElementById("informacion");
+                var myDropdown = document.getElementById("historial");
+                var myDropdown2 = document.getElementById("informacion");
                 myDropdown2.classList.remove('show');
-                myDropdown3.classList.remove('show');
-                myDropdown4.classList.remove('show');
+                myDropdown.classList.remove('show');
             }
             function dropHistorial() {
                 document.getElementById("historial").classList.toggle("show");
                 var myDropdown2 = document.getElementById("examenes");
-                var myDropdown3 = document.getElementById("consultas");
-                var myDropdown4 = document.getElementById("informacion");
+                var myDropdown = document.getElementById("informacion");
                 myDropdown2.classList.remove('show');
-                myDropdown3.classList.remove('show');
-                myDropdown4.classList.remove('show');
+                myDropdown.classList.remove('show');
             }
 
             // Close the dropdown if the user clicks outside of it
             window.onclick = function (e) {
                 if (!e.target.matches('.dropbtn')) {
-                    var myDropdown = document.getElementById("consultas");
-                    var myDropdown2 = document.getElementById("examenes");
-                    var myDropdown3 = document.getElementById("historial");
-                    var myDropdown4 = document.getElementById("informacion");
+                    var myDropdown = document.getElementById("examenes");
+                    var myDropdown2 = document.getElementById("historial");
+                    var myDropdown3 = document.getElementById("informacion");
                     if (myDropdown.classList.contains('show')) {
                         myDropdown.classList.remove('show');
                     }
@@ -100,9 +88,6 @@
                     }
                     if (myDropdown3.classList.contains('show')) {
                         myDropdown3.classList.remove('show');
-                    }
-                    if (myDropdown4.classList.contains('show')) {
-                        myDropdown4.classList.remove('show');
                     }
                 }
             };
