@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Menu</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="../styles/MenuPacienteStyle.css?2.0">
+
+    </head>
+    <body>
+        <div class="header">
+            <img class="logo" src="../img/logo.png" width="60" height="60" />
+            <div class="header-right">
+                <div class="navbar">
+                    <a href="LaboratoristaIndex.jsp">Inicio</a>
+                    <div class="dropdown">
+                        <button class="dropbtn" onclick="dropInformacion()">Examenes
+                            <i class="fa fa-caret-down"></i>
+                        </button>
+                        <div class="dropdown-content" id="informacion">
+                            <a href="VerCitaExamen.jsp">Realizar examen </a>
+                            <a href="VerCitaEliminar.jsp">Cancelar cita </a>
+                            <a href="VerExamenDia.jsp">Consultar examenes del dia</a>
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <button class="dropbtn" onclick="dropHistorial()">Historial
+                            <i class="fa fa-caret-down"></i>
+                        </button>
+                        <div class="dropdown-content" id="historial">
+                            <a href="VerInformeDia.jsp">Examenes realizados en el dia</a>
+                            <a href="VerDiasUtilizacion.jsp">Utilizacion del dia de trabajo</a>
+                            <a href="VerFechasTrabajo.jsp">10 fechas con mas trabajo</a>
+                        </div>
+                    </div>
+                    <a href="../index.jsp">Cerrar sesion</a>
+                </div>
+            </div>
+        </div>
+        <script>
+            /* When the user clicks on the button, 
+             toggle between hiding and showing the dropdown content */
+            function dropConsultas() {
+                document.getElementById("consultas").classList.toggle("show");
+                var myDropdown2 = document.getElementById("examenes");
+                var myDropdown3 = document.getElementById("historial");
+                var myDropdown4 = document.getElementById("informacion");
+                myDropdown2.classList.remove('show');
+                myDropdown3.classList.remove('show');
+                myDropdown4.classList.remove('show');
+            }
+            function dropInformacion() {
+                document.getElementById("informacion").classList.toggle("show");
+                var myDropdown2 = document.getElementById("examenes");
+                var myDropdown3 = document.getElementById("historial");
+                var myDropdown4 = document.getElementById("consultas");
+                myDropdown2.classList.remove('show');
+                myDropdown3.classList.remove('show');
+                myDropdown4.classList.remove('show');
+            }
+            function dropExamenes() {
+                document.getElementById("examenes").classList.toggle("show");
+                var myDropdown2 = document.getElementById("consultas");
+                var myDropdown3 = document.getElementById("historial");
+                var myDropdown4 = document.getElementById("informacion");
+                myDropdown2.classList.remove('show');
+                myDropdown3.classList.remove('show');
+                myDropdown4.classList.remove('show');
+            }
+            function dropHistorial() {
+                document.getElementById("historial").classList.toggle("show");
+                var myDropdown2 = document.getElementById("examenes");
+                var myDropdown3 = document.getElementById("consultas");
+                var myDropdown4 = document.getElementById("informacion");
+                myDropdown2.classList.remove('show');
+                myDropdown3.classList.remove('show');
+                myDropdown4.classList.remove('show');
+            }
+
+            // Close the dropdown if the user clicks outside of it
+            window.onclick = function (e) {
+                if (!e.target.matches('.dropbtn')) {
+                    var myDropdown = document.getElementById("consultas");
+                    var myDropdown2 = document.getElementById("examenes");
+                    var myDropdown3 = document.getElementById("historial");
+                    var myDropdown4 = document.getElementById("informacion");
+                    if (myDropdown.classList.contains('show')) {
+                        myDropdown.classList.remove('show');
+                    }
+                    if (myDropdown2.classList.contains('show')) {
+                        myDropdown2.classList.remove('show');
+                    }
+                    if (myDropdown3.classList.contains('show')) {
+                        myDropdown3.classList.remove('show');
+                    }
+                    if (myDropdown4.classList.contains('show')) {
+                        myDropdown4.classList.remove('show');
+                    }
+                }
+            };
+        </script>
+    </body>
+</html>

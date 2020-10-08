@@ -4,6 +4,7 @@
     Author     : jeffrey
 --%>
 
+<%@page import="java.time.LocalDate"%>
 <%@page import="java.sql.PreparedStatement"%>
 <%@page import="javax.swing.JOptionPane"%>
 <%@page import="java.sql.ResultSet"%>
@@ -21,9 +22,9 @@
 
     </head>
     <body>
-        <%@include  file="MenuNavigator.html" %>
+        <%@include  file="MenuNavigator3.html" %>
         <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br>
-        <form method="GET" action="VerCitaExamen.jsp">
+        <form method="GET" action="VerExamenDia.jsp">
             <div class="box">
                 <select name="tipo">
                     <option value="codigo">Codigo</option>
@@ -39,29 +40,12 @@
             </div>
         </form>
         <%
-            if (!(request.getParameter("eliminar") == null)) {
-                try {
-                    String citaEliminar = request.getParameter("eliminar");
-                    String queryEliminar = "DELETE FROM CITA_EXAMEN_LABORATORIO WHERE codigo=?";
-                    PreparedStatement statement = DbConnection.getConnection().prepareStatement(queryEliminar);
-                    statement.setString(1, citaEliminar);
-                    statement.execute();
-                    statement.close();
-        %> 
-        <div class="alert2">
-
-            <strong>Cancelado</strong> Se cancelo la cita correctamente
-        </div>
-        <%
-                } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, "no se elimino nada");
-                }
-            }
+            
 
             //Acciones que se ejecutan al presionar el boton
             try {
                 //Variables de filtro y del tipo
-                String codigoPaciente = String.valueOf(session.getAttribute("username"));
+                String codigoLab = String.valueOf(session.getAttribute("username"));
                 String queryselect = "";
                 String tipo = request.getParameter("tipo");
                 String filtro = request.getParameter("filtro");
@@ -71,20 +55,20 @@
                     if (tipo.equals("codigo")) {
                         queryselect = "SELECT C.*,L.nombre AS laboratorista,EL.nombre AS examen_nombre FROM CITA_EXAMEN_LABORATORIO C INNER JOIN LABORATORISTA L "
                                 + "ON C.laboratorista_codigo=L.codigo INNER JOIN EXAMEN_LABORATORIO EL ON L.examen_laboratorio_codigo=EL.codigo "
-                                + "WHERE C.paciente_codigo='" + codigoPaciente + "' && C.codigo LIKE '%" + request.getParameter("filtro") + "%';";
+                                + "WHERE C.fecha='"+LocalDate.now()+"' && C.laboratorista_codigo='" + codigoLab + "' && C.codigo LIKE '%" + request.getParameter("filtro") + "%';";
                         //Filtro por codigo
                     }
                 } else {
                     queryselect = "SELECT C.*,L.nombre AS laboratorista,EL.nombre AS examen_nombre FROM CITA_EXAMEN_LABORATORIO C INNER JOIN LABORATORISTA L "
                             + "ON C.laboratorista_codigo=L.codigo INNER JOIN EXAMEN_LABORATORIO EL ON L.examen_laboratorio_codigo=EL.codigo "
-                            + "WHERE C.paciente_codigo='" + codigoPaciente + "'";
+                            + "WHERE C.fecha='"+LocalDate.now()+"' && C.laboratorista_codigo='" + codigoLab + "'";
                 }
 
                 Statement statements = DbConnection.getConnection().createStatement();
                 ResultSet resultset01 = statements.executeQuery(queryselect);
                 // Ponemos los resultados en un table de html
         %>
-        <table id="customers"><tr><th>Codigo</th><th>Fecha</th><th>Hora</th><th>Laboratorista</th><th>Examen</th><th>Eliminar</th></tr>
+        <table id="customers"><tr><th>Codigo</th><th>Fecha</th><th>Hora</th><th>Laboratorista</th><th>Examen</th></tr>
                     <%
                         while (resultset01.next()) {
                             out.println("<tr>");
@@ -93,7 +77,7 @@
                             out.println("<td>" + resultset01.getObject("hora") + "</td>");
                             out.println("<td>" + resultset01.getObject("laboratorista") + "</td>");
                             out.println("<td>" + resultset01.getObject("examen_nombre") + "</td>");
-                                        %><td><center><a class="button2" href="VerCitaExamen.jsp?eliminar=<%=resultset01.getInt("codigo")%>">Cancelar consulta</a></center></td><%
+                                        
                                                 out.println("</tr>");
                                             }
 

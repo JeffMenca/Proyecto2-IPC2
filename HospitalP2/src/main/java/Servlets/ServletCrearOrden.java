@@ -5,8 +5,8 @@
  */
 package Servlets;
 
+
 import Entidades.Orden_Examen;
-import Entidades.Orden_PDF;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
@@ -133,7 +133,6 @@ public class ServletCrearOrden extends HttpServlet {
                     while ((bytes = fileInputStream.read()) != -1) {
                         responseOutputStream.write(bytes);
                     }
-                    Orden_PDF nuevoPDF=new Orden_PDF(fileInputStream, codigoOrden);
                     response.sendRedirect("medico/MensajeExito.jsp?mensaje= Orden generada exitosamente");
 
                 } catch (Exception e) {

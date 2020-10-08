@@ -73,7 +73,8 @@
                     session.setAttribute("username", request.getParameter("usuario"));
                     response.sendRedirect("medico/MedicoIndex.jsp");
                 } else if (login.ingresarLogin() == 3) {
-                    response.sendRedirect("newhtml.html");
+                    session.setAttribute("username", request.getParameter("usuario"));
+                    response.sendRedirect("laboratorista/LaboratoristaIndex.jsp");
                 } else if (login.ingresarLogin() == 4) {
                     session.setAttribute("username", request.getParameter("usuario"));
                     response.sendRedirect("administrador/AdminIndex.jsp");

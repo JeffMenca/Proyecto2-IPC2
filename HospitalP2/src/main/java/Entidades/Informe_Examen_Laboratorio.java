@@ -16,17 +16,17 @@ import java.time.LocalTime;
 public class Informe_Examen_Laboratorio {
     
     //Atributos
-    private String codigo;
+    private int codigo;
     private String descripcion;
     private LocalDate fecha;
     private LocalTime hora;
-    private String examen_laboratorio_codigo;
+    private int examen_laboratorio_codigo;
     private String paciente_codigo;
     private String laboratorista_codigo;
     
     //Constructor
 
-    public Informe_Examen_Laboratorio(String codigo, String descripcion, LocalDate fecha, LocalTime hora, String examen_laboratorio_codigo, String paciente_codigo, String laboratorista_codigo) {
+    public Informe_Examen_Laboratorio(int codigo, String descripcion, LocalDate fecha, LocalTime hora, int examen_laboratorio_codigo, String paciente_codigo, String laboratorista_codigo) {
         this.codigo = codigo;
         this.descripcion = descripcion;
         this.fecha = fecha;
@@ -51,11 +51,11 @@ public class Informe_Examen_Laboratorio {
             // Se ingresar los datos a la Query
 
             PreparedStatement statement = DbConnection.getConnection().prepareStatement(query);
-            statement.setString(1, getCodigo());
+            statement.setInt(1, 0);
             statement.setString(2, getDescripcion());
             statement.setDate(3, Date.valueOf(getFecha()));
             statement.setTime(4, Time.valueOf(getHora()));
-            statement.setString(5, getExamen_laboratorio_codigo());
+            statement.setInt(5, getExamen_laboratorio_codigo());
             statement.setString(6, getPaciente_codigo());
             statement.setString(7, getLaboratorista_codigo());
 
@@ -66,11 +66,11 @@ public class Informe_Examen_Laboratorio {
         }
     }
 
-    public String getCodigo() {
+    public int getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(String codigo) {
+    public void setCodigo(int codigo) {
         this.codigo = codigo;
     }
 
@@ -98,11 +98,11 @@ public class Informe_Examen_Laboratorio {
         this.hora = hora;
     }
 
-    public String getExamen_laboratorio_codigo() {
+    public int getExamen_laboratorio_codigo() {
         return examen_laboratorio_codigo;
     }
 
-    public void setExamen_laboratorio_codigo(String examen_laboratorio_codigo) {
+    public void setExamen_laboratorio_codigo(int examen_laboratorio_codigo) {
         this.examen_laboratorio_codigo = examen_laboratorio_codigo;
     }
 

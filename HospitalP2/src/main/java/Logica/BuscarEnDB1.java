@@ -73,6 +73,17 @@ public class BuscarEnDB1 {
         }
         return null;
     }
+    public ResultSet BuscarCitaExamen(int codigo) {
+        try {
+            String queryselect = "SELECT C.*,P.nombre AS paciente_nombre,P.codigo AS paciente_codigo,E.nombre AS tipo,E.codigo AS codigo_examen FROM CITA_EXAMEN_LABORATORIO C INNER JOIN PACIENTE P "
+                    + "ON C.paciente_codigo=P.codigo INNER JOIN LABORATORISTA L ON C.laboratorista_codigo=L.codigo INNER JOIN EXAMEN_LABORATORIO E ON L.examen_laboratorio_codigo=E.codigo WHERE C.codigo='" + codigo + "'";
+            PreparedStatement pstatement = DbConnection.getConnection().prepareStatement(queryselect);
+            ResultSet resultset01 = pstatement.executeQuery();
+            return resultset01;
+        } catch (Exception e) {
+        }
+        return null;
+    }
     public ResultSet BuscarOrden(int codigo) {
         try {
             String queryselect = "SELECT * FROM ORDEN_EXAMEN WHERE orden_examen_codigo='" + codigo + "'";
